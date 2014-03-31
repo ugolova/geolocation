@@ -40,7 +40,7 @@
            <number>10</number>
           </property>
           <item>
-           <widget class="QWebView" name="webView">
+           <widget class="QWebView" name="webView_search">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
               <horstretch>0</horstretch>
@@ -68,35 +68,35 @@
                <set>Qt::AlignRight|Qt::AlignTop|Qt::AlignTrailing</set>
               </property>
               <item row="1" column="0">
-               <widget class="QLabel" name="label_2">
+               <widget class="QLabel" name="label_from">
                 <property name="text">
                  <string>Откуда</string>
                 </property>
                </widget>
               </item>
               <item row="1" column="1">
-               <widget class="QLineEdit" name="lineEdit">
+               <widget class="QLineEdit" name="lineEdit_from">
                 <property name="text">
                  <string/>
                 </property>
                </widget>
               </item>
               <item row="2" column="0">
-               <widget class="QLabel" name="label_3">
+               <widget class="QLabel" name="label_to">
                 <property name="text">
                  <string>Куда</string>
                 </property>
                </widget>
               </item>
               <item row="2" column="1">
-               <widget class="QLineEdit" name="lineEdit_2">
+               <widget class="QLineEdit" name="lineEdit_to">
                 <property name="text">
                  <string/>
                 </property>
                </widget>
               </item>
               <item row="3" column="1">
-               <widget class="QPushButton" name="pushButton">
+               <widget class="QPushButton" name="button_search">
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                   <horstretch>0</horstretch>
@@ -132,7 +132,7 @@
                  <number>0</number>
                 </property>
                 <item row="0" column="0">
-                 <widget class="QTableWidget" name="tableWidget_2">
+                 <widget class="QTableWidget" name="table_route">
                   <property name="verticalScrollBarPolicy">
                    <enum>Qt::ScrollBarAsNeeded</enum>
                   </property>
@@ -188,7 +188,7 @@
            <number>10</number>
           </property>
           <item>
-           <widget class="QWebView" name="webView_2">
+           <widget class="QWebView" name="webView_stations">
             <property name="url">
              <url>
               <string>qrc:/resources/map.html</string>
@@ -204,49 +204,49 @@
                <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
               </property>
               <item row="0" column="0">
-               <widget class="QLabel" name="label">
+               <widget class="QLabel" name="label_stationName">
                 <property name="text">
                  <string>Название</string>
                 </property>
                </widget>
               </item>
               <item row="0" column="1">
-               <widget class="QLineEdit" name="lineEdit_3">
+               <widget class="QLineEdit" name="lineEdit_stationName">
                 <property name="text">
                  <string/>
                 </property>
                </widget>
               </item>
               <item row="2" column="0">
-               <widget class="QLabel" name="label_4">
+               <widget class="QLabel" name="label_stationLatitude">
                 <property name="text">
                  <string>Широта</string>
                 </property>
                </widget>
               </item>
               <item row="3" column="0">
-               <widget class="QLabel" name="label_5">
+               <widget class="QLabel" name="label_stationLongitude">
                 <property name="text">
                  <string>Долгота</string>
                 </property>
                </widget>
               </item>
               <item row="2" column="1">
-               <widget class="QLineEdit" name="lineEdit_4">
+               <widget class="QLineEdit" name="lineEdit_stationLatitude">
                 <property name="text">
                  <string/>
                 </property>
                </widget>
               </item>
               <item row="3" column="1">
-               <widget class="QLineEdit" name="lineEdit_5">
+               <widget class="QLineEdit" name="lineEdit_stationLongitude">
                 <property name="text">
                  <string/>
                 </property>
                </widget>
               </item>
               <item row="4" column="1">
-               <widget class="QPushButton" name="pushButton_2">
+               <widget class="QPushButton" name="button_addStation">
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                   <horstretch>0</horstretch>
@@ -259,14 +259,14 @@
                </widget>
               </item>
               <item row="1" column="0">
-               <widget class="QLabel" name="label_8">
+               <widget class="QLabel" name="label_stationType">
                 <property name="text">
                  <string>Тип</string>
                 </property>
                </widget>
               </item>
               <item row="1" column="1">
-               <widget class="QComboBox" name="comboBox_3">
+               <widget class="QComboBox" name="comboBox_stationType">
                 <item>
                  <property name="text">
                   <string>Метрополитен</string>
@@ -338,7 +338,7 @@
            <number>10</number>
           </property>
           <item>
-           <widget class="QWebView" name="webView_3">
+           <widget class="QWebView" name="webView_links">
             <property name="url">
              <url>
               <string>qrc:/resources/map.html</string>
@@ -351,21 +351,21 @@
             <item>
              <layout class="QFormLayout" name="formLayout_3">
               <item row="0" column="0">
-               <widget class="QLabel" name="label_6">
+               <widget class="QLabel" name="label_stationA">
                 <property name="text">
                  <string>Станция A</string>
                 </property>
                </widget>
               </item>
               <item row="1" column="0">
-               <widget class="QLabel" name="label_7">
+               <widget class="QLabel" name="label_stationB">
                 <property name="text">
                  <string>Станция B</string>
                 </property>
                </widget>
               </item>
               <item row="2" column="1">
-               <widget class="QPushButton" name="pushButton_3">
+               <widget class="QPushButton" name="button_linkStations">
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                   <horstretch>0</horstretch>
@@ -378,7 +378,7 @@
                </widget>
               </item>
               <item row="0" column="1">
-               <widget class="QComboBox" name="comboBox">
+               <widget class="QComboBox" name="comboBox_stationA">
                 <item>
                  <property name="text">
                   <string>Выберите станцию</string>
@@ -387,7 +387,7 @@
                </widget>
               </item>
               <item row="1" column="1">
-               <widget class="QComboBox" name="comboBox_2">
+               <widget class="QComboBox" name="comboBox_stationB">
                 <item>
                  <property name="text">
                   <string>Выберите станцию</string>
@@ -416,7 +416,7 @@
                  <number>0</number>
                 </property>
                 <item row="0" column="0">
-                 <widget class="QTableWidget" name="tableWidget_3">
+                 <widget class="QTableWidget" name="table_links">
                   <property name="rowCount">
                    <number>0</number>
                   </property>
