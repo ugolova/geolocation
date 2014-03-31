@@ -11,3 +11,8 @@
 *.lai
 *.la
 *.a
+
+# Qt Project
+*Release/
+*.pro.user
+
