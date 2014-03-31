@@ -14,10 +14,11 @@ namespace dynamicMap{
 
 	public:
 		MultiGraph();
-
-		bool addVertext(U* vertex);
-		bool addPathsToVertex(U* start, U* end, T* path);
-		bool removePathsFromVertex(U* start, U* end, T* path);
+		MultiGraph(DynamicArray<T>** matrix, DynamicArray<U>* vertex);
+		bool addVertex(U vertex);
+		bool addPathToVertex(U start, U end, T path);
+		bool removePathFromVertex(U start, U end, T path);
+		bool removeVertex(U vertex);
 
 		DynamicArray<T>* findShortestPath();
 
@@ -31,7 +32,15 @@ namespace dynamicMap{
 	}
 
 	template<class T, class U>
-	bool MultiGraph<T, U> ::addVertext(U* vertex)
+	MultiGraph<T, U> ::MultiGraph(DynamicArray<T>** matrix, DynamicArray<U>* vertex)
+	{
+		
+		this->matrix = matrix;
+		this->vertex = vertex;
+	}
+
+	template<class T, class U>
+	bool MultiGraph<T, U> ::addVertex(U vertex)
 	{
 		if (vertexs->addElem(vertex)) 
 			return true;
@@ -40,7 +49,7 @@ namespace dynamicMap{
 	}
 
 	template<class T, class U>
-	bool MultiGraph<T, U> ::addPathsToVertex(U* start, U* end, T* path)
+	bool MultiGraph<T, U> ::addPathToVertex(U start, U end, T path)
 	{
 		if (path == NULL)
 			return false;
@@ -55,18 +64,23 @@ namespace dynamicMap{
 	}
 
 	template<class T, class U>
-	bool MultiGraph<T, U> ::removePathsFromVertex(U* start, U* end, T* path)
+	bool MultiGraph<T, U> ::removePathFromVertex(U start, U end, T path)
 	{
 
 		//TODO
 		return false;
 	}
-		
+
+	template<class T, class U>
+	bool MultiGraph<T, U> ::removeVertex(U vertex)
+	{
+		//TODO
+		return false;
+	}
 
 	template<class T, class U>
 	MultiGraph<T, U> ::~MultiGraph()
 	{
 
 	}
-	
 }

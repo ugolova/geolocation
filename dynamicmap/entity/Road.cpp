@@ -3,7 +3,7 @@
 
 using namespace dynamicMap;
 
-Road::Road() :startStation(NULL), endStation(NULL), lenght(0)
+Road::Road() :lenght(0)
 {
 
 }
@@ -29,9 +29,17 @@ std::string Road::getStartStation() const
 	return startStation;
 }
 
-void Road::addPoint(Point point)
+void Road::addPoint(const Point& point)
 {
+	//TODO - calc road lenght
+	
 	points.push_back(point);
+}
+
+bool Road::removePoint(const Point& point)
+{
+	//TODO
+	return false;
 }
 
 std::string Road::getEndStation() const
@@ -42,6 +50,11 @@ std::string Road::getEndStation() const
 double Road::getLenght() const
 {
 	return lenght;
+}
+
+void Road::setLenght(double lenght)
+{
+	this->lenght = lenght;
 }
 
 

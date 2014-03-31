@@ -23,8 +23,10 @@ namespace dynamicMap{
 		std::string getStartStation() const;
 		std::string getEndStation() const;
 		double getLenght() const;
-		void addPoint(Point point);
-		bool removePoint(Point point);
+		void setLenght(double lenght);
+
+		void addPoint(const Point& point);
+		bool removePoint(const Point& point);
 		
 		~Road();
 	};

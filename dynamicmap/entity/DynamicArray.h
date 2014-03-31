@@ -20,6 +20,7 @@ namespace dynamicMap{
 		bool addElem(T elem);
 		bool removeElem(int num);
 		void printArray();
+		T get(int num);
 		int getIndex(T elem);
 		bool contains(T elem);
 
@@ -29,7 +30,7 @@ namespace dynamicMap{
 		~DynamicArray();
 	};
 
-	template<class T> DynamicArray<T>::DynamicArray() :capacity(8), index(0), arr(NULL)
+	template<class T> DynamicArray<T>::DynamicArray() :capacity(1), index(0), arr(NULL)
 	{
 	
 	}
@@ -44,15 +45,29 @@ namespace dynamicMap{
 	{
 		if (elem == NULL)
 			return false;
+		if (index == 0)
+			arr = new int[capacity];
 
 		if (index == capacity)
-		{
 			increaseSize(capacity * 2);
-		}
-	
+		
 		arr[index] = elem;
 		index++;
 		return true;
+	}
+
+
+	template<class T> T DynamicArray<T>::get(int num)
+	{
+		if (num > index || num < 0)
+			return NULL;
+		for (int i = 0; i < index; i++)
+		{
+			if (i == num)
+				return arr[i];
+		}
+		return NULL;
+
 	}
 
 	template<class T> bool DynamicArray<T>::removeElem(int num)

@@ -37,6 +37,7 @@ double Point::getLatitude() const
 
 bool Point ::operator == (const Point &obj)
 {
+	
 	return latitude == obj.latitude
 		&& longitude == obj.longitude;
 }
