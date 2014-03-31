@@ -49,7 +49,7 @@
             </property>
             <property name="url">
              <url>
-              <string>file:///home/fertkir/Qt-Workspace/dynamicmap/map.html</string>
+              <string>qrc:/resources/map.html</string>
              </url>
             </property>
            </widget>
@@ -124,7 +124,7 @@
                  <x>0</x>
                  <y>0</y>
                  <width>158</width>
-                 <height>210</height>
+                 <height>192</height>
                 </rect>
                </property>
                <layout class="QGridLayout" name="gridLayout_6">
@@ -191,7 +191,7 @@
            <widget class="QWebView" name="webView_2">
             <property name="url">
              <url>
-              <string>file:///home/fertkir/Qt-Workspace/dynamicmap/map.html</string>
+              <string>qrc:/resources/map.html</string>
              </url>
             </property>
            </widget>
@@ -291,8 +291,8 @@
                 <rect>
                  <x>0</x>
                  <y>0</y>
-                 <width>160</width>
-                 <height>186</height>
+                 <width>209</width>
+                 <height>192</height>
                 </rect>
                </property>
                <layout class="QGridLayout" name="gridLayout_7">
@@ -341,7 +341,7 @@
            <widget class="QWebView" name="webView_3">
             <property name="url">
              <url>
-              <string>file:///home/fertkir/Qt-Workspace/dynamicmap/map.html</string>
+              <string>qrc:/resources/map.html</string>
              </url>
             </property>
            </widget>
@@ -407,8 +407,8 @@
                 <rect>
                  <x>0</x>
                  <y>0</y>
-                 <width>163</width>
-                 <height>186</height>
+                 <width>243</width>
+                 <height>192</height>
                 </rect>
                </property>
                <layout class="QGridLayout" name="gridLayout_9">
