@@ -6,4 +6,4 @@ Common features:
 <li>uses multigraph structure for stations keeping</li>
 <li>is integrated with Yandex Maps API</li>
 </ul></br><br/>
-Building manual is contained in the BUILD file.
+Building manual is contained in the MANUAL file.

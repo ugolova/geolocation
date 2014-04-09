@@ -1,0 +1,13 @@
+This manual contains the information about building and running
+the St Petersburg Railway/Subway Map application.
+
+------------------- BUILDING
+
+# Linux (tested on Ubuntu 12.04)
+chmod +x build.sh
+./build.sh
+
+------------------- RUNNING
+
+# Linux (tested on Ubuntu 12.04)
+./dmap
