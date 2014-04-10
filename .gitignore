@@ -13,6 +13,6 @@
 *.a
 
 # Qt Project
-*Release/
+build-*/
 *.pro.user
 

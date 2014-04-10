@@ -35,7 +35,7 @@
        </attribute>
        <layout class="QGridLayout" name="gridLayout_5">
         <item row="0" column="0">
-         <layout class="QHBoxLayout" name="horizontalLayout" stretch="3,1">
+         <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,1">
           <property name="spacing">
            <number>10</number>
           </property>
@@ -123,12 +123,21 @@
                 <rect>
                  <x>0</x>
                  <y>0</y>
-                 <width>158</width>
+                 <width>132</width>
                  <height>192</height>
                 </rect>
                </property>
                <layout class="QGridLayout" name="gridLayout_6">
-                <property name="margin">
+                <property name="leftMargin">
+                 <number>0</number>
+                </property>
+                <property name="topMargin">
+                 <number>0</number>
+                </property>
+                <property name="rightMargin">
+                 <number>0</number>
+                </property>
+                <property name="bottomMargin">
                  <number>0</number>
                 </property>
                 <item row="0" column="0">
@@ -291,12 +300,21 @@
                 <rect>
                  <x>0</x>
                  <y>0</y>
-                 <width>209</width>
+                 <width>183</width>
                  <height>192</height>
                 </rect>
                </property>
                <layout class="QGridLayout" name="gridLayout_7">
-                <property name="margin">
+                <property name="leftMargin">
+                 <number>0</number>
+                </property>
+                <property name="topMargin">
+                 <number>0</number>
+                </property>
+                <property name="rightMargin">
+                 <number>0</number>
+                </property>
+                <property name="bottomMargin">
                  <number>0</number>
                 </property>
                 <item row="0" column="0">
@@ -407,12 +425,21 @@
                 <rect>
                  <x>0</x>
                  <y>0</y>
-                 <width>243</width>
+                 <width>217</width>
                  <height>192</height>
                 </rect>
                </property>
                <layout class="QGridLayout" name="gridLayout_9">
-                <property name="margin">
+                <property name="leftMargin">
+                 <number>0</number>
+                </property>
+                <property name="topMargin">
+                 <number>0</number>
+                </property>
+                <property name="rightMargin">
+                 <number>0</number>
+                </property>
+                <property name="bottomMargin">
                  <number>0</number>
                 </property>
                 <item row="0" column="0">
@@ -455,7 +482,7 @@
      <x>0</x>
      <y>0</y>
      <width>699</width>
-     <height>25</height>
+     <height>20</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu">
@@ -487,7 +514,7 @@
   <customwidget>
    <class>QWebView</class>
    <extends>QWidget</extends>
-   <header>QtWebKit/QWebView</header>
+   <header>QtWebKitWidgets/QWebView</header>
   </customwidget>
  </customwidgets>
  <resources/>
