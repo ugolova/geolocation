@@ -20,13 +20,17 @@ on the following platforms:
   4. Run dynamicmap.exe to run the program.
 
 ---------- Linux
-  1. Download and install Qt 5.2.1 for Linux 64-bit from official website:
+  1. Make sure you have make, gcc, g++ and other building utilities.
+  2. Download and install Qt 5.2.1 for Linux 64-bit from official website:
     http://qt-project.org/downloads
-  2. Edit QMAKE variable in build.sh file if qmake is contained in another directory.
+  3. Install the following:
+    sudo apt-get install libgstreamer0.10-dev
+    sudo apt-get install libgstreamer-plugins-base0.10-dev
+  4. Edit QMAKE variable in build.sh file if qmake is contained in another directory.
     Default is "$HOME/Qt5.2.1/5.2.1/gcc_64/bin/qmake"
-  3. Make sure that build.sh is executable:
+  5. Make sure that build.sh is executable:
     chmod +x build.sh
-  3. Run build.sh to build the program.
+  6. Run build.sh to build the program.
     ./build.sh
-  4. Run dmap to run the program.
+  7. Run dmap to run the program.
     ./dmap
