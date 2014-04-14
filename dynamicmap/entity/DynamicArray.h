@@ -17,12 +17,12 @@ namespace dynamicMap{
 
 	public:
 		DynamicArray();
-		bool addElem(T elem);
+		bool addElem(T* elem);
 		bool removeElem(int num);
 		void printArray();
-		T get(int num);
-		int getIndex(T elem);
-		bool contains(T elem);
+		T* get(int num);
+		int getIndex(T* elem);
+		bool contains(T* elem);
 
 
 
@@ -41,30 +41,29 @@ namespace dynamicMap{
 	}
 	
 
-	template<class T> bool DynamicArray<T>::addElem(T elem)
+	template<class T> bool DynamicArray<T>::addElem(T* elem)
 	{
-		if (elem == NULL)
-			return false;
-		if (index == 0)
-			arr = new int[capacity];
-
-		if (index == capacity)
-			increaseSize(capacity * 2);
-		
-		arr[index] = elem;
-		index++;
+		if (elem != NULL)
+		{
+			if (index == 0)
+				arr = new T[capacity];
+			if (index == capacity)
+				increaseSize(capacity * 2);
+			arr[index] = *elem;
+			index++;
+		}
 		return true;
 	}
 
 
-	template<class T> T DynamicArray<T>::get(int num)
+	template<class T> T* DynamicArray<T>::get(int num)
 	{
 		if (num > index || num < 0)
 			return NULL;
 		for (int i = 0; i < index; i++)
 		{
 			if (i == num)
-				return arr[i];
+				return &arr[i];
 		}
 		return NULL;
 
@@ -73,12 +72,10 @@ namespace dynamicMap{
 	template<class T> bool DynamicArray<T>::removeElem(int num)
 	{
 		
-		if (num > index || num < 0){
+		if (num > index || num < 0)
 			return false;
-		}
-
+		
 		T* result = new T[index - 1];
-	
 		for (int i = 0, j = 0; j < index -1 ; i++)
 		{
 			if (i == num)
@@ -87,6 +84,7 @@ namespace dynamicMap{
 			j++;
 		}
 		delete[] arr;
+		arr = 0;
 	    arr = result;
 	
 		index--;
@@ -94,31 +92,31 @@ namespace dynamicMap{
 
 	}
 
-	template<class T> int DynamicArray<T>::getIndex(T elem)
+	template<class T> int DynamicArray<T>::getIndex(T* elem)
 	{
-		if (elem == NULL)
-			return -1;
-
-		for (int i = 0; i < index; i++)
+		if (elem != NULL)
 		{
-			if (arr[i] == elem)
-				return i;
+			for (int i = 0; i < index; i++)
+			{
+				if (arr[i] == elem)
+					return i;
+			}
 		}
 		return -1;
 	}
 
-	template<class T> bool DynamicArray<T>::contains(T elem)
+	template<class T> bool DynamicArray<T>::contains(T* elem)
 	{
-		if (elem == NULL)
-			return false;
-		if (getIndex(elem) != -1)
+		if (elem != NULL)
 		{
-			return true;
+			if (getIndex(elem) != -1)
+			{
+				return true;
+			}
 		}
-		else
-		{
-			return false;
-		}
+
+		return false;
+		
 	}
 
 	template<class T> void DynamicArray<T>::increaseSize(int newCapicity)
@@ -133,16 +131,7 @@ namespace dynamicMap{
 		capacity = newCapicity;
 	}
 
-
-
-	template<class T> void DynamicArray<T>::printArray()
-	{
-		for (int i = 0; i < index; i++)
-		{
-			std:: cout << arr[i] << "\n";
-		}
-	}
-
+	
 
 	template<class T> DynamicArray<T>::~DynamicArray()
 	{

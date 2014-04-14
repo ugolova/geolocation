@@ -24,6 +24,7 @@ namespace dynamicMap{
 		~Point();
 
 		bool operator == (const Point &obj);
+		bool operator != (const Point &obj);
 	};
 }
 

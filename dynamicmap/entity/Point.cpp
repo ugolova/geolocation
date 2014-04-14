@@ -42,6 +42,13 @@ bool Point ::operator == (const Point &obj)
 		&& longitude == obj.longitude;
 }
 
+bool Point ::operator != (const Point &obj)
+{
+
+	return !(latitude == obj.latitude
+		&& longitude == obj.longitude);
+}
+
 Point::~Point()
 {
 }

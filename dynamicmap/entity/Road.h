@@ -24,10 +24,16 @@ namespace dynamicMap{
 		std::string getEndStation() const;
 		double getLenght() const;
 		void setLenght(double lenght);
+		std::vector<Point> getPoints();
 
 		void addPoint(const Point& point);
 		bool removePoint(const Point& point);
 		
+
+		bool operator == (Road* road);
+		Road* operator = (Road* road);
+		
+
 		~Road();
 	};
 }

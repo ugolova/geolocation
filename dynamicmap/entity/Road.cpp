@@ -24,6 +24,11 @@ void Road::setEndStation(std::string endStation)
 	this->endStation = endStation;
 }
 
+std::vector<Point> Road::getPoints()
+{
+	return points;
+}
+
 std::string Road::getStartStation() const
 {
 	return startStation;
@@ -55,6 +60,34 @@ double Road::getLenght() const
 void Road::setLenght(double lenght)
 {
 	this->lenght = lenght;
+}
+
+bool Road:: operator == (Road* road)
+{
+	int key = startStation.compare(road->getStartStation()) + endStation.compare(road->getEndStation());
+	if (key != 0 && lenght != road->getLenght())
+		return false;
+
+	if (points.size() != road->getPoints().size())
+		return false;
+	for (int i = 0; i < points.size(); i++)
+	{
+		if (points[i] != road->getPoints()[i])
+			return false;
+	}
+
+
+	return true;
+}
+
+Road* Road:: operator = (Road* road)
+{
+
+	Road *result = new Road(road->getStartStation(), road->getEndStation());
+	result->setLenght(road->getLenght());
+	//TODO!!!
+	//result->
+	return result;	
 }
 
 
