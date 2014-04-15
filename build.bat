@@ -1,5 +1,5 @@
 mkdir build
-xcopy /E dynamicmap\ui build
+xcopy /E dynamicmap build
 cd build
 qmake
 mingw32-make
