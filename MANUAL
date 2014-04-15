@@ -21,13 +21,16 @@ on the following platforms:
 
 ---------- Linux
   1. Make sure you have make, gcc, g++ and other building utilities.
+    sudo apt-get install build-essential
   2. Download and install Qt 5.2.1 for Linux 64-bit from official website:
     http://qt-project.org/downloads
-  3. Install the following:
+  3. Install the following libraries:
     sudo apt-get install libgstreamer0.10-dev
     sudo apt-get install libgstreamer-plugins-base0.10-dev
+    sudo apt-get install libgl1-mesa-dev
+    sudo apt-get install libxslt1-dev
   4. Edit QMAKE variable in build.sh file if qmake is contained in another directory.
-    Default is "$HOME/Qt5.2.1/5.2.1/gcc_64/bin/qmake"
+    Default is "$HOME/Qt/5.2.1/gcc_64/bin/qmake"
   5. Make sure that build.sh is executable:
     chmod +x build.sh
   6. Run build.sh to build the program.
