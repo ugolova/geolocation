@@ -24,4 +24,4 @@ HEADERS  += mainwindow.h \
 FORMS    += mainwindow.ui \
     logindialog.ui
     
-RESOURCES += dynamicmap.qrc
+RESOURCES +=
