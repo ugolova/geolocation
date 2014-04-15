@@ -47,11 +47,6 @@
               <verstretch>0</verstretch>
              </sizepolicy>
             </property>
-            <property name="url">
-             <url>
-              <string>qrc:/resources/map.html</string>
-             </url>
-            </property>
            </widget>
           </item>
           <item>
@@ -197,13 +192,7 @@
            <number>10</number>
           </property>
           <item>
-           <widget class="QWebView" name="webView_stations">
-            <property name="url">
-             <url>
-              <string>qrc:/resources/map.html</string>
-             </url>
-            </property>
-           </widget>
+           <widget class="QWebView" name="webView_stations"/>
           </item>
           <item>
            <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -356,13 +345,7 @@
            <number>10</number>
           </property>
           <item>
-           <widget class="QWebView" name="webView_links">
-            <property name="url">
-             <url>
-              <string>qrc:/resources/map.html</string>
-             </url>
-            </property>
-           </widget>
+           <widget class="QWebView" name="webView_links"/>
           </item>
           <item>
            <layout class="QVBoxLayout" name="verticalLayout_4">
