@@ -15,11 +15,13 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     logindialog.cpp \
-    mapcreator.cpp
+    mapcreator.cpp \
+    authentication.cpp
 
 HEADERS  += mainwindow.h \
     logindialog.h \
-    mapcreator.h
+    mapcreator.h \
+    authentication.h
 
 FORMS    += mainwindow.ui \
     logindialog.ui

@@ -5,6 +5,7 @@
 #include <QMainWindow>
 #include "logindialog.h"
 #include "mapcreator.h"
+#include "authentication.h"
 
 namespace Ui {
 class MainWindow;
@@ -23,6 +24,7 @@ public slots:
     
 private slots:
     void on_button_search_clicked();
+    void logout();
 
 private:
     Ui::MainWindow *ui;
@@ -30,6 +32,7 @@ private:
     MapCreator *mapSearch;
     MapCreator *mapStations;
     MapCreator *mapLinks;
+    static const QString WINDOW_TITLE;
 };
 
 #endif // MAINWINDOW_H

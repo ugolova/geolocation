@@ -35,7 +35,7 @@
        </attribute>
        <layout class="QGridLayout" name="gridLayout_5">
         <item row="0" column="0">
-         <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,1">
+         <layout class="QHBoxLayout" name="horizontalLayout" stretch="3,1">
           <property name="spacing">
            <number>10</number>
           </property>
@@ -118,7 +118,7 @@
                 <rect>
                  <x>0</x>
                  <y>0</y>
-                 <width>132</width>
+                 <width>158</width>
                  <height>192</height>
                 </rect>
                </property>
@@ -273,6 +273,11 @@
                 <item>
                  <property name="text">
                   <string>РЖД</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>РЖД/Метрополитен</string>
                  </property>
                 </item>
                </widget>
@@ -473,6 +478,7 @@
      <string>Файл</string>
     </property>
     <addaction name="login"/>
+    <addaction name="logout"/>
     <addaction name="exit"/>
    </widget>
    <addaction name="menu"/>
@@ -489,6 +495,11 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+Q</string>
+   </property>
+  </action>
+  <action name="logout">
+   <property name="text">
+    <string>Выйти из под учетной записи</string>
    </property>
   </action>
  </widget>
