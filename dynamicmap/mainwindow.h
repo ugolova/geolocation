@@ -27,6 +27,9 @@ private slots:
 private:
     Ui::MainWindow *ui;
     LoginDialog *loginDialog;
+    MapCreator *mapSearch;
+    MapCreator *mapStations;
+    MapCreator *mapLinks;
 };
 
 #endif // MAINWINDOW_H

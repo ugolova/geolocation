@@ -7,16 +7,23 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    MapCreator mapCreator = MapCreator();
-    mapCreator.writeHTML();
+    mapSearch = new MapCreator(SEARCH);
+    mapSearch->makeHTML();
+    QString mapSearchPath = QString("file://") + QString(mapSearch->getMapFilePath());
+    qDebug("mapSearchPath: %s", mapSearchPath.toLatin1().data());
+    ui->webView_search->load(QUrl(mapSearchPath));
 
-    QString mapPath = QString("file:///") + QDir::current().absolutePath() + QDir::separator() + QString(MapCreator::getMapFilename());
-    qDebug("MapPath: %s", mapPath.toLatin1().data());
-    ui->webView_search->load(QUrl(mapPath));
-    ui->webView_stations->load(QUrl(mapPath));
-    ui->webView_links->load(QUrl(mapPath));
+    mapStations = new MapCreator(STATIONS);
+    mapStations->makeHTML();
+    QString mapStationsPath = QString("file://") + QString(mapStations->getMapFilePath());
+    qDebug("mapStationsPath: %s", mapStationsPath.toLatin1().data());
+    ui->webView_stations->load(QUrl(mapStationsPath));
 
-
+    mapLinks = new MapCreator(LINKS);
+    mapLinks->makeHTML();
+    QString mapLinksPath = QString("file://") + QString(mapLinks->getMapFilePath());
+    qDebug("mapLinksPath: %s", mapLinksPath.toLatin1().data());
+    ui->webView_links->load(QUrl(mapLinksPath));
 
     connect(ui->login, SIGNAL(triggered()), this, SLOT(openLoginDialog()));
 }
@@ -24,6 +31,9 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow()
 {
     delete ui;
+    delete mapSearch;
+    delete mapStations;
+    delete mapLinks;
 }
 
 void MainWindow::openLoginDialog()

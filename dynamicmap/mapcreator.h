@@ -4,25 +4,30 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <QDir>
 
 using namespace std;
 
+enum MapMode { SEARCH, STATIONS, LINKS };
+
 class MapCreator
 {
-public:
-    MapCreator();
-    static const char* getMapFilename();
-    void writeHTML();
-
 private:
-    static const string MAP_FILENAME;
-    static const string HTML_TITLE;
-    static const string MAP_API_URL;
-    static const string JS_MAP_VAR;
-    static const double MAP_CENTER_LAT;
-    static const double MAP_CENTER_LON;
-    void addStation(ofstream out);
-    void addLink(ofstream out);
+    MapMode mode;
+    string mapFilePath;
+    string htmlTitle;
+    string mapApiUrl;
+    string jsMapVar;
+    double mapCenterLat;
+    double mapCenterLon;
+
+    void addStations(ofstream& out);
+    void addLinks(ofstream& out);
+
+public:
+    MapCreator(MapMode mode);
+    const char* getMapFilePath();
+    void makeHTML();
 };
 
 #endif // MAPCREATOR_H
