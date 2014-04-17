@@ -1,6 +1,6 @@
 #pragma once
 #include<string>
-#include<iostream>
+
 
 class Station
 {
@@ -13,7 +13,7 @@ private:
 public:
 	Station();
 
-	Station(std::string name);
+	Station(std::string name, double longitude, double latitude);
 	void setLongitude(double longitude);
 	void setLatitude(double latitude);
 	double getLongitude() const;
