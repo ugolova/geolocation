@@ -96,11 +96,6 @@ void MainWindow::logout()
     qDebug() << "Logged out";
 }
 
-void MainWindow::on_button_search_clicked()
-{
-    ui->webView_search->reload();
-}
-
 void MainWindow::importFile()
 {
     QString fileName = QFileDialog::getOpenFileName(this, tr("Импортировать файл"), "", tr("Files (*.*)"));
@@ -111,4 +106,32 @@ void MainWindow::exportFile()
 {
     QString fileName = QFileDialog::getSaveFileName(this, tr("Экспортировать в файл"), "", tr("Files (*.*)"));
     qDebug() << "Exporting to file: " << fileName;
+}
+
+void MainWindow::on_button_search_clicked()
+{
+    qDebug() << "Making route from " << ui->lineEdit_from->text() << " to " << ui->lineEdit_to->text();
+    ui->webView_search->reload();
+}
+
+void MainWindow::on_button_addStation_clicked()
+{
+    qDebug() << "Added station: "
+             << ui->lineEdit_stationName->text()
+             << ", type: "
+             << ui->comboBox_stationType->currentText()
+             << ", lat: "
+             << ui->lineEdit_stationLatitude->text()
+             << ", lon: "
+             << ui->lineEdit_stationLongitude->text();
+    ui->webView_stations->reload();
+}
+
+void MainWindow::on_button_linkStations_clicked()
+{
+    qDebug() << "Added link: "
+             << ui->comboBox_stationA->currentText()
+             << " - "
+             << ui->comboBox_stationB->currentText();
+    ui->webView_links->reload();
 }

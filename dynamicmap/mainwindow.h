@@ -24,10 +24,12 @@ public slots:
     void openLoginDialog();
     
 private slots:
-    void on_button_search_clicked();
     void logout();
     void importFile();
     void exportFile();
+    void on_button_search_clicked();
+    void on_button_addStation_clicked();
+    void on_button_linkStations_clicked();
 
 private:
     Ui::MainWindow *ui;
