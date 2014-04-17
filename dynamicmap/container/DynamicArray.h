@@ -24,13 +24,13 @@ namespace dynamicMap{
 		int getIndex(T* elem);
 		bool contains(T* elem);
 
-
+		
 
 		int getSize();
 		~DynamicArray();
 	};
 
-	template<class T> DynamicArray<T>::DynamicArray() :capacity(1), index(0), arr(NULL)
+	template<class T> DynamicArray<T>::DynamicArray() :capacity(1), index(0), arr(0)
 	{
 	
 	}
@@ -39,11 +39,10 @@ namespace dynamicMap{
 	{
 		return index;
 	}
-	
 
 	template<class T> bool DynamicArray<T>::addElem(T* elem)
 	{
-		if (elem != NULL)
+		if (elem != 0)
 		{
 			if (index == 0)
 				arr = new T[capacity];
@@ -59,13 +58,13 @@ namespace dynamicMap{
 	template<class T> T* DynamicArray<T>::get(int num)
 	{
 		if (num > index || num < 0)
-			return NULL;
+			return 0;
 		for (int i = 0; i < index; i++)
 		{
 			if (i == num)
 				return &arr[i];
 		}
-		return NULL;
+		return 0;
 
 	}
 
@@ -75,7 +74,7 @@ namespace dynamicMap{
 		if (num > index || num < 0)
 			return false;
 		
-		T* result = new T[index - 1];
+		T* result = new T[capacity];
 		for (int i = 0, j = 0; j < index -1 ; i++)
 		{
 			if (i == num)
@@ -87,6 +86,8 @@ namespace dynamicMap{
 		arr = 0;
 	    arr = result;
 	
+		result = 0;
+
 		index--;
 		return true;
 
@@ -94,11 +95,11 @@ namespace dynamicMap{
 
 	template<class T> int DynamicArray<T>::getIndex(T* elem)
 	{
-		if (elem != NULL)
+		if (elem != 0)
 		{
 			for (int i = 0; i < index; i++)
 			{
-				if (arr[i] == elem)
+				if (arr[i] == *elem)
 					return i;
 			}
 		}
@@ -107,17 +108,18 @@ namespace dynamicMap{
 
 	template<class T> bool DynamicArray<T>::contains(T* elem)
 	{
-		if (elem != NULL)
+		if (elem != 0)
 		{
 			if (getIndex(elem) != -1)
 			{
 				return true;
 			}
 		}
-
 		return false;
-		
 	}
+
+
+
 
 	template<class T> void DynamicArray<T>::increaseSize(int newCapicity)
 	{
@@ -128,10 +130,10 @@ namespace dynamicMap{
 		}
 		delete[] arr;
 		arr = temp;
+		temp = 0;
 		capacity = newCapicity;
 	}
-
-	
+		
 
 	template<class T> DynamicArray<T>::~DynamicArray()
 	{

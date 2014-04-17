@@ -7,7 +7,7 @@ namespace dynamicMap{
 	class MultiGraph
 	{
 	private:
-
+		
 		DynamicArray<T>* matrix;
 		DynamicArray<U>* vertexs;
 		int capacity = 1;
@@ -15,18 +15,19 @@ namespace dynamicMap{
 
 		void increaseMatrix();
 		bool addVertex(U* vertex);
+		
 
 	public:
 		MultiGraph();
 		~MultiGraph();
 		
-		bool addPathToVertex(U* start, U* end, T* path);
-		bool removePathFromVertex(U start, U end, T path);
-		bool removeVertex(U vertex);
+		void addPathToVertex(U* start, U* end, T* lenght);
+		DynamicArray<T> * getLenghtsByStation(U* start, U* end);
+		
+		bool removePathFromVertex(U* start, U* end, T* lenght);
+		bool removeVertex(U* vertex);
+		
 		DynamicArray<T>* findShortestPath();
-		
-		
-
 	};
 
 	template<class T, class U>
@@ -45,64 +46,118 @@ namespace dynamicMap{
 		{
 			for (int j = 0; j < index; j++)
 			{
-				temp[j*index + i] = matrix[j*index + i];
+				temp[j*capacity + i] = matrix[j*capacity/2 + i];
 			}
 		}
 		delete[] matrix;
 		matrix = temp;
+		temp = 0;
 	}
+	
 
+	template<class T, class U>
+	DynamicArray<T>* MultiGraph<T, U> ::getLenghtsByStation(U* start, U* end)
+	{
+		int i = vertexs->getIndex(start);
+		int j = vertexs->getIndex(end);
+		if (i != -1 && j != -1)
+			return &matrix[j*capacity + i];
+		return 0;
+	}
 
 	template<class T, class U>
 	bool MultiGraph<T, U> ::addVertex(U* vertex)
 	{
 		if (vertexs->addElem(vertex)){
+			if (index == capacity)
+				increaseMatrix();
 			index++;
 			return true;
 		}
-		
 		return false;
 	}
 
 	
 	template<class T, class U>
-	bool MultiGraph<T, U> ::addPathToVertex(U* start, U* end, T* path)
+	void MultiGraph<T, U> ::addPathToVertex(U* start, U* end, T* lenght)
 	{
-		if (path != NULL)
+		int i = vertexs->getIndex(start);
+		if (i == -1)
 		{
-
-			//TODO
-			int i, j = 0;
-			if ((i = vertexs->getIndex(start)) != -1 && (j = vertexs->getIndex(end)) != -1)
-			{
-				if (index == capacity);
-					increaseMatrix();
-				vertexs->addElem(start);
-				vertexs->addElem(end);
-				
-				i = vertexs->getIndex(start);
-				j = vertexs->getIndex(end);
-				
-				//matrix[j*capacity + i] = path;
-			}
+			addVertex(start);
+			i = vertexs->getIndex(start);
 		}
 
-		return false;
+		int j = vertexs->getIndex(end);
+		if (j == -1)
+		{
+			addVertex(end);
+			j = vertexs->getIndex(end);
+		}
+		DynamicArray<T>* temp = &matrix[j*capacity + i];
+		temp->addElem(lenght);
+		
 	}
 
 	template<class T, class U>
-	bool MultiGraph<T, U> ::removePathFromVertex(U start, U end, T path)
+	bool MultiGraph<T, U> ::removePathFromVertex(U* start, U* end, T* lenght)
 	{
-
-		//TODO
-		return false;
+		int i = vertexs->getIndex(start);
+		int j = vertexs->getIndex(end);
+		if (i != -1 && j != -1)
+		{
+			DynamicArray<T> * tempArr = &matrix[j*capacity + i];
+				
+			if (tempArr->removeElem(tempArr->getIndex(lenght)) != -1)
+			{
+				tempArr = 0;
+				return true;
+			}
+			else
+			{
+				false;
+			}
+		}
+		else
+		{
+			return false;
+		}
+		
 	}
 
 	template<class T, class U>
-	bool MultiGraph<T, U> ::removeVertex(U vertex)
+	bool MultiGraph<T, U> ::removeVertex(U* vertex)
 	{
-		//TODO
-		return false;
+		int key = vertexs->getIndex(vertex); 
+		if (key != -1)
+		{
+			DynamicArray<T> *tempMatrix = new DynamicArray<T>[capacity*capacity];
+			for (int i = 0 ,k = 0 ; i < index; i++)
+			{
+				for (int j = 0 , l = 0; j < index; j++)
+				{
+					if (i == key || j == key)
+						continue;
+
+					tempMatrix[l*capacity + k] = matrix[j*capacity + i];
+					l++;
+				}
+				if (i != key)
+					k++;
+			}
+			delete[] matrix;
+
+			vertexs->removeElem(key);
+			index--;
+
+			matrix = tempMatrix;
+			tempMatrix = 0;
+		}
+		else
+		{
+			return false;
+		}
+		
 	}
 
 	template<class T, class U>

@@ -19,10 +19,29 @@ std::string Station::getName()
 {
 	return name;
 }
-bool Station :: operator == (Station* obj)
+void Station::setLongitude(double longitude)
 {
-	int i = name.compare(obj->getName());
-	if (i == 0)
+	this->longitude = longitude;
+
+}
+void Station::setLatitude(double latitude)
+{
+	this->latitude = latitude;
+}
+
+double Station::getLongitude() const
+{
+	return longitude;
+}
+double Station::getLatitude() const
+{
+	return latitude;
+}
+
+bool Station :: operator == (const Station &obj)
+{
+	int i = name.compare(obj.name);
+	if (i == 0 && obj.latitude == latitude && obj.longitude == longitude)
 		return 1;
 	return 0;
 }
@@ -30,4 +49,5 @@ bool Station :: operator == (Station* obj)
 
 Station::~Station()
 {
+		
 }
