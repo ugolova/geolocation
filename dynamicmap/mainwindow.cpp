@@ -21,7 +21,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     mapSearch = new MapCreator(SEARCH);
     mapSearch->makeHTML();
-    QString mapSearchPath = "file://" + QString(mapSearch->getMapFilePath());
+    QString mapSearchPath = "file:///" + QString(mapSearch->getMapFilePath());
     qDebug() << "mapSearchPath: " << mapSearchPath;
     ui->webView_search->load(QUrl(mapSearchPath));
 
@@ -60,7 +60,7 @@ void MainWindow::openLoginDialog()
             if (mapStations == NULL) {
                 mapStations = new MapCreator(STATIONS);
                 mapStations->makeHTML();
-                QString mapStationsPath = "file://" + QString(mapStations->getMapFilePath());
+                QString mapStationsPath = "file:///" + QString(mapStations->getMapFilePath());
                 qDebug() << "mapStationsPath: " << mapStationsPath;
                 ui->webView_stations->load(QUrl(mapStationsPath));
             }
@@ -68,7 +68,7 @@ void MainWindow::openLoginDialog()
             if (mapLinks == NULL) {
                 mapLinks = new MapCreator(LINKS);
                 mapLinks->makeHTML();
-                QString mapLinksPath = "file://" + QString(mapLinks->getMapFilePath());
+                QString mapLinksPath = "file:///" + QString(mapLinks->getMapFilePath());
                 qDebug() << "mapLinksPath: " << mapLinksPath;
                 ui->webView_links->load(QUrl(mapLinksPath));
             }

@@ -3,7 +3,7 @@
 MapCreator::MapCreator(MapMode mode)
 {
     this->mode = mode;
-    mapFilePath = (QDir::tempPath() + QDir::separator()).toStdString() + "dynamicmap_";
+    mapFilePath = (QDir::toNativeSeparators(QDir::tempPath()) + QDir::separator()).toStdString() + "dynamicmap_";
     htmlTitle = "DynamicMap";
     switch (this->mode) {
     case SEARCH:
