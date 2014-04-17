@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QDir>
+#include <QFileDialog>
 #include <QMainWindow>
 #include "logindialog.h"
 #include "mapcreator.h"
@@ -25,6 +26,8 @@ public slots:
 private slots:
     void on_button_search_clicked();
     void logout();
+    void importFile();
+    void exportFile();
 
 private:
     Ui::MainWindow *ui;
