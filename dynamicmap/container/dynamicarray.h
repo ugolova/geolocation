@@ -21,9 +21,7 @@
 		T* get(int num);
 		int getIndex(T* elem);
 		bool contains(T* elem);
-
-		
-
+	
 		int getSize();
 		~DynamicArray();
 	};

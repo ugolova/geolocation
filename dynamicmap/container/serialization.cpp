@@ -4,6 +4,8 @@ Serialization::Serialization()
 {
 }
 
+//TODO serialize and deserialize type of station
+
 MultiGraph<double, Station>* Serialization::readObject(const char* fileName)
 {
     std::ifstream in(fileName);
@@ -22,6 +24,7 @@ MultiGraph<double, Station>* Serialization::readObject(const char* fileName)
             Station *startStation = 0;
             Station *endStation = 0;
             double *lenght = 0;
+			bool isRailRoadStation;
             int i = 0;
             while (std::getline(ss, temp, delim))
             {
@@ -51,7 +54,7 @@ MultiGraph<double, Station>* Serialization::readObject(const char* fileName)
                         convertLon >> longS;
                         std::stringstream convertLat(latitude.c_str());
                         convertLat >> laS;
-                        startStation = new Station(name, longS, laS);
+                        startStation = new Station(name, longS, laS,1);
                     }
                     else
                     {
@@ -61,7 +64,7 @@ MultiGraph<double, Station>* Serialization::readObject(const char* fileName)
                         convertLon >> longS;
                         std::stringstream convertLat(latitude.c_str());
                         convertLat >> laS;
-                        endStation = new Station(name, longS, laS);
+                        endStation = new Station(name, longS, laS,1);
                     }
                 }
                 else if (i == 2)
@@ -73,8 +76,12 @@ MultiGraph<double, Station>* Serialization::readObject(const char* fileName)
                     lenght = new double(tmpLen);
                     //std::cout << *lenght << "\n";
                 }
+				else if (i == 3)
+				{
+					
+				}
                 i++;
-                //TODO
+                
             }
 
             graph->addPathToVertex(startStation, endStation, lenght);

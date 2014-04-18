@@ -7,11 +7,12 @@ Station::Station():
 {
 }
 
-Station::Station(std::string name, double longitude, double latitude)
+Station::Station(std::string name, double longitude, double latitude, bool isRailRoadStation)
 {
 	this->name = name; 
 	this->longitude = longitude;
 	this->latitude = latitude;
+	this->isRailRoadStation = isRailRoadStation;
 }
 
 void Station::setName(std::string name)

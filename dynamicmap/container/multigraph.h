@@ -12,7 +12,6 @@
 		DynamicArray<U>* vertexs;
         int capacity;
         int index;
-
 		void increaseMatrix();
 		bool addVertex(U* vertex);
 		
@@ -23,12 +22,9 @@
 		
 		void addPathToVertex(U* start, U* end, T* lenght);
 		DynamicArray<T> * getLenghtsByStation(U* start, U* end);
-		
 		bool removePathFromVertex(U* start, U* end, T* lenght);
 		bool removeVertex(U* vertex);
 		DynamicArray<U>* getVertexs();
-		
-		DynamicArray<T>* findShortestPath();
 	};
 
 

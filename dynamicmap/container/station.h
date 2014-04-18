@@ -9,12 +9,12 @@ private:
 	std::string name;
     double longitude;
     double latitude;
-
+	bool isRailRoadStation = 1;
 
 public:
 	Station();
 
-	Station(std::string name, double longitude, double latitude);
+	Station(std::string name, double longitude, double latitude ,bool isRailRoadStation);
 	void setLongitude(double longitude);
 	void setLatitude(double latitude);
 	double getLongitude() const;
