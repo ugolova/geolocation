@@ -100,31 +100,12 @@ void MapCreator::addStations(ofstream& out)
             out << "    balloonContent: '" << st->getName() << "'," << endl;
             out << "});" << endl;
             out << jsMapVar << ".geoObjects.add(p" << i << ");" << endl;
-            qDebug() << st->getLatitude() << " " << st->getLongitude();
+
+            qDebug() << "Written to HTML - Station: " << st->getName().c_str() << ", "
+                     << "Lat: " << st->getLatitude() << ", "
+                     << "Lon: " << st->getLongitude();
         }
     }
-    /*
-    int id = 1;
-    out << "p" << id << " = new ymaps.Placemark([59.991686, 30.221030], {" << endl;
-    out << "    hintContent: 'Яхтенная'," << endl;
-    out << "    balloonContent: 'Яхтенная'," << endl;
-    out << "});" << endl;
-    out << jsMapVar << ".geoObjects.add(p" << id << ");" << endl;
-
-    id = 2;
-    out << "p" << id << " = new ymaps.Placemark([59.989260, 30.255280], {" << endl;
-    out << "    hintContent: 'Старая Деревня'," << endl;
-    out << "    balloonContent: 'Старая Деревня'," << endl;
-    out << "});" << endl;
-    out << jsMapVar << ".geoObjects.add(p" << id << ");" << endl;
-
-    id = 3;
-    out << "p" << id << " = new ymaps.Placemark([60.008344, 30.258577], {" << endl;
-    out << "    hintContent: 'Комендантский проспект'," << endl;
-    out << "    balloonContent: 'Комендантский проспект'," << endl;
-    out << "});" << endl;
-    out << jsMapVar << ".geoObjects.add(p" << id << ");" << endl;
-    */
 }
 
 void MapCreator::addLinks(ofstream& out)
