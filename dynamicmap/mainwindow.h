@@ -38,6 +38,7 @@ private:
     MapCreator *mapStations;
     MapCreator *mapLinks;
     static const QString WINDOW_TITLE;
+    MultiGraph<double, Station> *container;
 };
 
 #endif // MAINWINDOW_H

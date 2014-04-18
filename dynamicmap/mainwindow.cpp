@@ -19,13 +19,15 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->logout->setVisible(false);
 
+    loginDialog = new LoginDialog();
+    container = new MultiGraph<double, Station>();
+
     mapSearch = new MapCreator(SEARCH);
+    mapSearch->setContainer(container);
     mapSearch->makeHTML();
     QString mapSearchPath = "file:///" + QString(mapSearch->getMapFilePath());
     qDebug() << "mapSearchPath: " << mapSearchPath;
     ui->webView_search->load(QUrl(mapSearchPath));
-
-    loginDialog = new LoginDialog();
 
     connect(ui->login, SIGNAL(triggered()), this, SLOT(openLoginDialog()));
     connect(ui->logout, SIGNAL(triggered()), this, SLOT(logout()));
@@ -40,6 +42,7 @@ MainWindow::~MainWindow()
     delete mapStations;
     delete mapLinks;
     delete loginDialog;
+    delete container;
 }
 
 void MainWindow::openLoginDialog()
@@ -59,6 +62,7 @@ void MainWindow::openLoginDialog()
 
             if (mapStations == NULL) {
                 mapStations = new MapCreator(STATIONS);
+                mapSearch->setContainer(container);
                 mapStations->makeHTML();
                 QString mapStationsPath = "file:///" + QString(mapStations->getMapFilePath());
                 qDebug() << "mapStationsPath: " << mapStationsPath;
@@ -67,6 +71,7 @@ void MainWindow::openLoginDialog()
 
             if (mapLinks == NULL) {
                 mapLinks = new MapCreator(LINKS);
+                mapSearch->setContainer(container);
                 mapLinks->makeHTML();
                 QString mapLinksPath = "file:///" + QString(mapLinks->getMapFilePath());
                 qDebug() << "mapLinksPath: " << mapLinksPath;
@@ -100,12 +105,39 @@ void MainWindow::importFile()
 {
     QString fileName = QFileDialog::getOpenFileName(this, tr("Импортировать файл"), "", tr("Files (*.*)"));
     qDebug() << "Importing file: " << fileName;
+
+    MultiGraph<double, Station> *newContainer = Serialization::readObject(fileName.toStdString().c_str());
+
+    mapSearch->setContainer(newContainer);
+    if (mapStations != NULL) {
+        mapStations->setContainer(newContainer);
+    }
+    if (mapLinks != NULL) {
+        mapLinks->setContainer(newContainer);
+    }
+
+    mapSearch->makeHTML();
+    if (mapStations != NULL) {
+        mapStations->makeHTML();
+    }
+    if (mapLinks != NULL) {
+        mapLinks->makeHTML();
+    }
+
+    delete container;
+    container = newContainer;
+
+    ui->webView_search->reload();
+    ui->webView_stations->reload();
+    ui->webView_links->reload();
 }
 
 void MainWindow::exportFile()
 {
     QString fileName = QFileDialog::getSaveFileName(this, tr("Экспортировать в файл"), "", tr("Files (*.*)"));
     qDebug() << "Exporting to file: " << fileName;
+
+    Serialization::writeObject(container, fileName.toStdString().c_str());
 }
 
 void MainWindow::on_button_search_clicked()

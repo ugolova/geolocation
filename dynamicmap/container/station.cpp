@@ -1,7 +1,9 @@
-#include "Station.h"
+#include "station.h"
 
 
-Station::Station()
+Station::Station():
+    longitude(0),
+    latitude(0)
 {
 }
 

@@ -1,6 +1,7 @@
 #include "mapcreator.h"
 
-MapCreator::MapCreator(MapMode mode)
+MapCreator::MapCreator(MapMode mode):
+    container(NULL)
 {
     this->mode = mode;
     mapFilePath = (QDir::toNativeSeparators(QDir::tempPath()) + QDir::separator()).toStdString() + "dynamicmap_";
@@ -78,8 +79,31 @@ void MapCreator::makeHTML()
     out.close();
 }
 
+void MapCreator::setContainer(MultiGraph<double, Station> *container)
+{
+    this->container = container;
+}
+
+MultiGraph<double, Station>* MapCreator::getContainer()
+{
+    return container;
+}
+
 void MapCreator::addStations(ofstream& out)
 {
+    if (container != NULL) {
+        DynamicArray<Station> *arr = container->getVertexs();
+        for (int i = 0; i < arr->getSize(); i++) {
+            Station *st = arr->get(i);
+            out << "p" << i << " = new ymaps.Placemark([" << st->getLatitude() << ", " << st->getLongitude() << "], {" << endl;
+            out << "    hintContent: '" << st->getName() << "'," << endl;
+            out << "    balloonContent: '" << st->getName() << "'," << endl;
+            out << "});" << endl;
+            out << jsMapVar << ".geoObjects.add(p" << i << ");" << endl;
+            qDebug() << st->getLatitude() << " " << st->getLongitude();
+        }
+    }
+    /*
     int id = 1;
     out << "p" << id << " = new ymaps.Placemark([59.991686, 30.221030], {" << endl;
     out << "    hintContent: 'Яхтенная'," << endl;
@@ -100,6 +124,7 @@ void MapCreator::addStations(ofstream& out)
     out << "    balloonContent: 'Комендантский проспект'," << endl;
     out << "});" << endl;
     out << jsMapVar << ".geoObjects.add(p" << id << ");" << endl;
+    */
 }
 
 void MapCreator::addLinks(ofstream& out)

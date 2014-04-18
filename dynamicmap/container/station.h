@@ -1,13 +1,14 @@
-#pragma once
-#include<string>
+#ifndef STATION_H
+#define STATION_H
 
+#include <string>
 
 class Station
 {
 private:
 	std::string name;
-	double longitude = 0;
-	double latitude = 0;
+    double longitude;
+    double latitude;
 
 
 public:
@@ -25,3 +26,4 @@ public:
 	~Station();
 };
 
+#endif // STATION_H

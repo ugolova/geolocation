@@ -5,6 +5,8 @@
 #include <fstream>
 #include <string>
 #include <QDir>
+#include <container/serialization.h>
+#include <QDebug>
 
 using namespace std;
 
@@ -20,14 +22,17 @@ private:
     string jsMapVar;
     double mapCenterLat;
     double mapCenterLon;
+    MultiGraph<double, Station> *container;
 
     void addStations(ofstream& out);
     void addLinks(ofstream& out);
 
 public:
     MapCreator(MapMode mode);
-    const char* getMapFilePath();
+    const char *getMapFilePath();
     void makeHTML();
+    void setContainer(MultiGraph<double, Station> *container);
+    MultiGraph<double, Station> *getContainer();
 };
 
 #endif // MAPCREATOR_H

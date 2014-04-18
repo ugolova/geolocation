@@ -16,14 +16,23 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     logindialog.cpp \
     mapcreator.cpp \
-    authentication.cpp
+    authentication.cpp \
+    container/serialization.cpp \
+    container/station.cpp
 
 HEADERS  += mainwindow.h \
     logindialog.h \
     mapcreator.h \
-    authentication.h
+    authentication.h \
+    container/serialization.h \
+    container/station.h \
+    container/dynamicarray.h \
+    container/multigraph.h
 
 FORMS    += mainwindow.ui \
     logindialog.ui
     
 RESOURCES +=
+
+OTHER_FILES += \
+    container/test.txt
