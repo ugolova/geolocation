@@ -18,7 +18,9 @@ SOURCES += main.cpp\
     mapcreator.cpp \
     authentication.cpp \
     container/serialization.cpp \
-    container/station.cpp
+    container/station.cpp \
+    container/algorithm.cpp \
+    container/road.cpp
 
 HEADERS  += mainwindow.h \
     logindialog.h \
@@ -27,7 +29,10 @@ HEADERS  += mainwindow.h \
     container/serialization.h \
     container/station.h \
     container/dynamicarray.h \
-    container/multigraph.h
+    container/multigraph.h \
+    container/algorithm.h \
+    container/dynamicarrayutill.h \
+    container/road.h
 
 FORMS    += mainwindow.ui \
     logindialog.ui

@@ -62,7 +62,7 @@ void MainWindow::openLoginDialog()
 
             if (mapStations == NULL) {
                 mapStations = new MapCreator(STATIONS);
-                mapSearch->setContainer(container);
+                mapStations->setContainer(container);
                 mapStations->makeHTML();
                 QString mapStationsPath = "file:///" + QString(mapStations->getMapFilePath());
                 qDebug() << "mapStationsPath: " << mapStationsPath;
@@ -71,7 +71,7 @@ void MainWindow::openLoginDialog()
 
             if (mapLinks == NULL) {
                 mapLinks = new MapCreator(LINKS);
-                mapSearch->setContainer(container);
+                mapLinks->setContainer(container);
                 mapLinks->makeHTML();
                 QString mapLinksPath = "file:///" + QString(mapLinks->getMapFilePath());
                 qDebug() << "mapLinksPath: " << mapLinksPath;

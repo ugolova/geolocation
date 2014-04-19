@@ -8,6 +8,8 @@
 #include <fstream>
 #include <stdlib.h>
 
+using namespace container;
+
 class Serialization
 {
 public:

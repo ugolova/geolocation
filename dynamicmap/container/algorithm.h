@@ -4,6 +4,8 @@
 #include "multigraph.h"
 #include "road.h"
 
+using namespace container;
+
 class Algorithm
 {
 public:

@@ -3,6 +3,8 @@
 
 #include "dynamicarray.h"
 
+namespace container {
+
 	template<class T ,class U>
 	class MultiGraph
 	{
@@ -26,10 +28,10 @@
 		bool removeVertex(U* vertex);
 		DynamicArray<U>* getVertexs();
 	};
-
+}
 
     template<class T, class U>
-    MultiGraph<T, U> ::MultiGraph():
+    container::MultiGraph<T, U> ::MultiGraph():
         capacity(1),
         index(0)
     {
@@ -38,7 +40,7 @@
     }
 
     template<class T, class U>
-    void MultiGraph<T, U> ::increaseMatrix()
+    void container::MultiGraph<T, U> ::increaseMatrix()
     {
         capacity = capacity * 2;
         DynamicArray<T> *temp = new DynamicArray<T>[capacity*capacity];
@@ -56,7 +58,7 @@
 
 
     template<class T, class U>
-    DynamicArray<T>* MultiGraph<T, U> ::getLenghtsByStation(U* start, U* end)
+    container::DynamicArray<T>* container::MultiGraph<T, U> ::getLenghtsByStation(U* start, U* end)
     {
         int i = vertexs->getIndex(start);
         int j = vertexs->getIndex(end);
@@ -66,7 +68,7 @@
     }
 
     template<class T, class U>
-    bool MultiGraph<T, U> ::addVertex(U* vertex)
+    bool container::MultiGraph<T, U> ::addVertex(U* vertex)
     {
         if (vertexs->addElem(vertex)){
             if (index == capacity)
@@ -77,13 +79,13 @@
         return false;
     }
     template<class T, class U>
-    DynamicArray<U>* MultiGraph<T, U> ::getVertexs()
+    container::DynamicArray<U>* container::MultiGraph<T, U> ::getVertexs()
     {
         return vertexs;
     }
 
     template<class T, class U>
-    void MultiGraph<T, U> ::addPathToVertex(U* start, U* end, T* lenght)
+    void container::MultiGraph<T, U> ::addPathToVertex(U* start, U* end, T* lenght)
     {
         int i = vertexs->getIndex(start);
         if (i == -1)
@@ -104,7 +106,7 @@
     }
 
     template<class T, class U>
-    bool MultiGraph<T, U> ::removePathFromVertex(U* start, U* end, T* lenght)
+    bool container::MultiGraph<T, U> ::removePathFromVertex(U* start, U* end, T* lenght)
     {
         int i = vertexs->getIndex(start);
         int j = vertexs->getIndex(end);
@@ -130,7 +132,7 @@
     }
 
     template<class T, class U>
-    bool MultiGraph<T, U> ::removeVertex(U* vertex)
+    bool container::MultiGraph<T, U> ::removeVertex(U* vertex)
     {
         int key = vertexs->getIndex(vertex);
         if (key != -1)
@@ -165,7 +167,7 @@
     }
 
     template<class T, class U>
-    MultiGraph<T, U> ::~MultiGraph()
+    container::MultiGraph<T, U> ::~MultiGraph()
     {
 
     }

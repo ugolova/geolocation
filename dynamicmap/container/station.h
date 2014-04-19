@@ -9,7 +9,7 @@ private:
 	std::string name;
     double longitude;
     double latitude;
-	bool isRailRoadStation = 1;
+    bool isRailRoadStation;
 
 public:
 	Station();

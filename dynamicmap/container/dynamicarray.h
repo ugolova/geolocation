@@ -1,6 +1,8 @@
 #ifndef DYNAMICARRAY_H
 #define DYNAMICARRAY_H
 
+namespace container {
+
 	template<class T>
 	class DynamicArray
 	{
@@ -25,19 +27,19 @@
 		int getSize();
 		~DynamicArray();
 	};
+}
 
-
-    template<class T> DynamicArray<T>::DynamicArray() :capacity(1), index(0), arr(0)
+    template<class T> container::DynamicArray<T>::DynamicArray() :capacity(1), index(0), arr(0)
     {
 
     }
 
-    template<class T> int DynamicArray<T>::getSize()
+    template<class T> int container::DynamicArray<T>::getSize()
     {
         return index;
     }
 
-    template<class T> bool DynamicArray<T>::addElem(T* elem)
+    template<class T> bool container::DynamicArray<T>::addElem(T* elem)
     {
         if (elem != 0)
         {
@@ -52,7 +54,7 @@
     }
 
 
-    template<class T> T* DynamicArray<T>::get(int num)
+    template<class T> T* container::DynamicArray<T>::get(int num)
     {
         if (num > index || num < 0)
             return 0;
@@ -65,7 +67,7 @@
 
     }
 
-    template<class T> bool DynamicArray<T>::removeElem(int num)
+    template<class T> bool container::DynamicArray<T>::removeElem(int num)
     {
 
         if (num > index || num < 0)
@@ -90,7 +92,7 @@
 
     }
 
-    template<class T> int DynamicArray<T>::getIndex(T* elem)
+    template<class T> int container::DynamicArray<T>::getIndex(T* elem)
     {
         if (elem != 0)
         {
@@ -103,7 +105,7 @@
         return -1;
     }
 
-    template<class T> bool DynamicArray<T>::contains(T* elem)
+    template<class T> bool container::DynamicArray<T>::contains(T* elem)
     {
         if (elem != 0)
         {
@@ -118,7 +120,7 @@
 
 
 
-    template<class T> void DynamicArray<T>::increaseSize(int newCapicity)
+    template<class T> void container::DynamicArray<T>::increaseSize(int newCapicity)
     {
         T * temp = new T[newCapicity];
         for (int i = 0; i < capacity; i++)
@@ -132,7 +134,7 @@
     }
 
 
-    template<class T> DynamicArray<T>::~DynamicArray()
+    template<class T> container::DynamicArray<T>::~DynamicArray()
     {
 
     }

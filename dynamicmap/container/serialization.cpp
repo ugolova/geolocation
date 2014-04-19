@@ -24,7 +24,6 @@ MultiGraph<double, Station>* Serialization::readObject(const char* fileName)
             Station *startStation = 0;
             Station *endStation = 0;
             double *lenght = 0;
-			bool isRailRoadStation;
             int i = 0;
             while (std::getline(ss, temp, delim))
             {
