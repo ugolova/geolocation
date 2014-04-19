@@ -1,7 +1,7 @@
-#ifndef DYNAMICARRAYUTILL_H
-#define DYNAMICARRAYUTILL_H
+#ifndef DYNAMIC_ARRAY_UTIL_H
+#define DYNAMIC_ARRAY_UTIL_H
 
-#include"dynamicarray.h"
+#include "dynamic_array.h"
 
 template<class T>
 class DynamicArrayUtill
@@ -34,5 +34,4 @@ T DynamicArrayUtill<T>::findMin(DynamicArray<T>* arr)
 }
 
 
-#endif
-
+#endif // DYNAMIC_ARRAY_UTIL_H

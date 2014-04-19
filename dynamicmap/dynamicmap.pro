@@ -28,11 +28,11 @@ HEADERS  += mainwindow.h \
     authentication.h \
     container/serialization.h \
     container/station.h \
-    container/dynamicarray.h \
     container/multigraph.h \
     container/algorithm.h \
-    container/dynamicarrayutill.h \
-    container/road.h
+    container/road.h \
+    container/dynamic_array.h \
+    container/dynamic_array_utill.h
 
 FORMS    += mainwindow.ui \
     logindialog.ui

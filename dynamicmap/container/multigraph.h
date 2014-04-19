@@ -1,7 +1,7 @@
 #ifndef MULTIGRAPH_H
 #define MULTIGRAPH_H
 
-#include "dynamicarray.h"
+#include "dynamic_array.h"
 
 namespace container {
 

@@ -1,5 +1,5 @@
-#ifndef DYNAMICARRAY_H
-#define DYNAMICARRAY_H
+#ifndef DYNAMIC_ARRAY_H
+#define DYNAMIC_ARRAY_H
 
 namespace container {
 
@@ -139,4 +139,4 @@ namespace container {
 
     }
 
-#endif // DYNAMICARRAY_H
+#endif // DYNAMIC_ARRAY_H
