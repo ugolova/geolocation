@@ -5,8 +5,11 @@
 #include <QString>
 #include <QDebug>
 
+class AuthenticationTest;
+
 class Authentication
 {
+    friend class AuthenticationTest;
 private:
     static const int usersCount;
     static const char* usernames[];

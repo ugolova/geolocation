@@ -12,4 +12,4 @@ public:
 	static DynamicArray<Road>* findShortestPath(MultiGraph<double, Station>* graph);
 };
 
-#endif 
+#endif // ALGORITHM_H

@@ -1,6 +1,5 @@
 #include "station.h"
 
-
 Station::Station():
     longitude(0),
     latitude(0),

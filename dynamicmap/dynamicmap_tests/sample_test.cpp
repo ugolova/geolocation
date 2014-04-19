@@ -7,5 +7,5 @@ SampleTest::SampleTest(QObject *parent) :
 
 void SampleTest::testCase1()
 {
-    QCOMPARE("a", "a");
+    QCOMPARE("b", "b");
 }

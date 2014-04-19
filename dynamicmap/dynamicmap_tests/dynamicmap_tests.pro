@@ -10,9 +10,14 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += testcase
 
-HEADERS += sample_test.h \
-    sample2_test.h
+HEADERS += \
+    authentication_test.h \
+    sample_test.h \
+    ../dynamicmap_src/authentication.h
 
-SOURCES += sample_test.cpp \
+SOURCES += \
     main.cpp \
-    sample2_test.cpp
+    authentication_test.cpp \
+    sample_test.cpp \
+    ../dynamicmap_src/authentication.cpp
+
