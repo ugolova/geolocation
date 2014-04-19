@@ -3,8 +3,11 @@
 
 #include <string>
 
+class StationTest;
+
 class Station
 {
+    friend class StationTest;
 private:
 	std::string name;
     double longitude;
