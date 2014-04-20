@@ -27,6 +27,7 @@ namespace container {
 		bool removePathFromVertex(U* start, U* end, T* lenght);
 		bool removeVertex(U* vertex);
 		DynamicArray<U>* getVertexs();
+
 	};
 }
 

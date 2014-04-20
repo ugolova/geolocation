@@ -3,21 +3,26 @@
 Station::Station():
     longitude(0),
     latitude(0),
-    isRailRoadStation(true)
+    type(0)
 {
 }
 
-Station::Station(std::string name, double longitude, double latitude, bool isRailRoadStation)
+Station::Station(std::string name, double longitude, double latitude, int type)
 {
 	this->name = name; 
 	this->longitude = longitude;
 	this->latitude = latitude;
-	this->isRailRoadStation = isRailRoadStation;
+	this->type = type;
 }
 
 void Station::setName(std::string name)
 {
 	this->name = name;
+}
+
+int Station::getType()
+{
+	return type;
 }
 
 std::string Station::getName()
@@ -46,7 +51,7 @@ double Station::getLatitude() const
 bool Station :: operator == (const Station &obj)
 {
 	int i = name.compare(obj.name);
-	if (i == 0 && obj.latitude == latitude && obj.longitude == longitude)
+	if (i == 0 && obj.latitude == latitude && obj.longitude == longitude && type == obj.type)
 		return 1;
 	return 0;
 }

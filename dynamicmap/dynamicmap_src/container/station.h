@@ -12,16 +12,18 @@ private:
 	std::string name;
     double longitude;
     double latitude;
-    bool isRailRoadStation;
+    int type;
 
 public:
 	Station();
 
-	Station(std::string name, double longitude, double latitude ,bool isRailRoadStation);
+	Station(std::string name, double longitude, double latitude ,int type);
 	void setLongitude(double longitude);
 	void setLatitude(double latitude);
 	double getLongitude() const;
 	double getLatitude() const;
+	int getType();
+
 
 	void setName(std::string name);
 	std::string getName();
