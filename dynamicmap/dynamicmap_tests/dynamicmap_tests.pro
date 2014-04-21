@@ -16,6 +16,8 @@ HEADERS += \
     ../dynamicmap_src/authentication.h \
     container/station_test.h \
     ../dynamicmap_src/container/station.h \
+    container/road_test.h \
+    ../dynamicmap_src/container/road.h
 
 SOURCES += \
     main.cpp \
@@ -24,4 +26,6 @@ SOURCES += \
     ../dynamicmap_src/authentication.cpp \
     container/station_test.cpp \
     ../dynamicmap_src/container/station.cpp \
+    container/road_test.cpp \
+    ../dynamicmap_src/container/road.cpp
 

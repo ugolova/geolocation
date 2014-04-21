@@ -5,8 +5,9 @@
 
 class Road
 {
+    friend class RoadTest;
 private:
-	Station* start;
+    Station* start;
 	Station* end;
 	double lenght;
 public:

@@ -3,6 +3,7 @@
 
 #include "authentication_test.h"
 #include "container/station_test.h"
+#include "container/road_test.h"
 #include "sample_test.h"
 
 int main(int argc, char* argv[])
@@ -20,6 +21,10 @@ int main(int argc, char* argv[])
     std::cout << std::endl;
 
     result |= QTest::qExec(new SampleTest(), argc, argv);
+
+    std::cout << std::endl;
+
+    result |= QTest::qExec(new RoadTest(), argc, argv);
 
     return result;
 }
