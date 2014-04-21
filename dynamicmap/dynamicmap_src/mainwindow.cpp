@@ -144,6 +144,17 @@ void MainWindow::importFile()
     delete container;
     container = newContainer;
 
+
+    DynamicArray<Station> *stations = container->getVertexs();
+    for (int i = 0; i < stations->getSize(); i++)
+    {
+        int rowNum = ui->table_stations->rowCount();
+        QTableWidgetItem *newItem = new QTableWidgetItem(QString::fromStdString(stations->get(i)->getName()));
+        newItem->setFlags(newItem->flags() ^ Qt::ItemIsEditable);
+        ui->table_stations->insertRow(rowNum);
+        ui->table_stations->setItem(rowNum, 0, newItem);
+    }
+
     ui->webView_search->reload();
     ui->webView_stations->reload();
     ui->webView_links->reload();

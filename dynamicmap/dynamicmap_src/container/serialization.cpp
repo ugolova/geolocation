@@ -122,7 +122,7 @@ void Serialization::writeObject(MultiGraph<double, Station> *graph ,const char* 
                     //std::cout << start->getName() << "[" << start->getLatitude() << ":" << start->getLongitude() << "]" << "-"
                     //    << end->getName() << "[" << end->getLatitude() << ":" << end->getLongitude() << "]" << "-[" << *lenghts->get(k) << "]" << std::endl;
                     out << start->getName() << "[" << start->getLongitude() << ":" << start->getLatitude() << "]/" <<start->getType() << "-"
-                        << end->getName() << "[" << end->getLatitude() << ":" << end->getLongitude() << "]/" <<end->getType() << "-[" << *lenghts->get(k) << "]" << std::endl;
+                        << end->getName() << "[" << end->getLongitude() << ":" << end->getLatitude() << "]/" <<end->getType() << "-[" << *lenghts->get(k) << "]" << std::endl;
                 }
             }
         }
