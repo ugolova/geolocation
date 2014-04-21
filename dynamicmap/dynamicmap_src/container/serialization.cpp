@@ -43,6 +43,9 @@ MultiGraph<double, Station>* Serialization::readObject(const char* fileName)
                     int len = temp.length() - latitude.length() - 3;
                     longitude = temp.substr(latitude.length() + 1 ,len);
                     latitude = latitude.substr(name.length() + 1);
+                    std::string swapTmp = longitude;
+                    longitude = latitude;
+                    latitude = swapTmp;
 					int tempPos = temp.find("/");
 					typeStr = temp.substr(tempPos + 1);
 
@@ -118,7 +121,7 @@ void Serialization::writeObject(MultiGraph<double, Station> *graph ,const char* 
                 {
                     //std::cout << start->getName() << "[" << start->getLatitude() << ":" << start->getLongitude() << "]" << "-"
                     //    << end->getName() << "[" << end->getLatitude() << ":" << end->getLongitude() << "]" << "-[" << *lenghts->get(k) << "]" << std::endl;
-                    out << start->getName() << "[" << start->getLatitude() << ":" << start->getLongitude() << "]/" <<start->getType() << "-"
+                    out << start->getName() << "[" << start->getLongitude() << ":" << start->getLatitude() << "]/" <<start->getType() << "-"
                         << end->getName() << "[" << end->getLatitude() << ":" << end->getLongitude() << "]/" <<end->getType() << "-[" << *lenghts->get(k) << "]" << std::endl;
                 }
             }
