@@ -35,8 +35,9 @@ const char* MapCreator::getMapFilePath()
     return mapFilePath.c_str();
 }
 
-void MapCreator::makeHTML(MakeMode makeMode)
+QString MapCreator::makeHTML(MakeMode makeMode)
 {
+    QString result = "";
     ofstream out;
     out.open(mapFilePath.c_str());
     out << "<!DOCTYPE html>" << endl;
@@ -69,7 +70,7 @@ void MapCreator::makeHTML(MakeMode makeMode)
            addLinks(out);
         }
     } else if (makeMode == MAKE_SHORTEST_PATH) {
-        addShortestPath(out);
+        result = addShortestPath(out);
     }
 
     out << "}" << endl;
@@ -81,6 +82,8 @@ void MapCreator::makeHTML(MakeMode makeMode)
     out << "</html>" << endl;
 
     out.close();
+
+    return result;
 }
 
 void MapCreator::setContainer(MultiGraph<double, Station> *container)
@@ -155,7 +158,71 @@ void MapCreator::addLinks(ofstream& out)
     out << jsMapVar << ".geoObjects.add(l" << id << ");" << endl;
 }
 
- void MapCreator::addShortestPath(ofstream& out)
- {
-    //Algorithm::findShortestPath(container, )
- }
+QString MapCreator::addShortestPath(ofstream& out)
+{
+    Station *start = ControllerGUI::getStationByName(container, pathStationA);
+    Station *end = ControllerGUI::getStationByName(container, pathStationB);
+
+    if (start != NULL && end != NULL) {
+        double length = 0;
+        std::vector<Road> roads = Algorithm::findShortestPath(container, start, end, length);
+
+        for(int i = 0; i < roads.size(); i++) {
+
+            Road r = roads[i];
+            Station *stA = r.getStart();
+            Station *stB = r.getEnd();
+
+            // stations
+            out << "p" << i << " = new ymaps.Placemark([" << stA->getLatitude() << ", " << stA->getLongitude() << "], {" << endl;
+            out << "    hintContent: '" << stA->getName() << "'," << endl;
+            out << "    balloonContent: '" << stA->getName() << "'," << endl;
+            out << "});" << endl;
+            out << jsMapVar << ".geoObjects.add(p" << i << ");" << endl;
+
+            // links
+            out << "l" << i << " = new ymaps.GeoObject({" << endl;
+            out << "    geometry: {" << endl;
+            out << "        type: \"LineString\"," << endl;
+            out << "        coordinates: [" << endl;
+            out << "            [" << stA->getLatitude() << ", " << stA->getLongitude() << "]," << endl;
+            out << "            [" << stB->getLatitude() << ", " << stB->getLongitude() << "]" << endl;
+            out << "        ]" << endl;
+            out << "    }," << endl;
+            out << "    properties:{" << endl;
+            out << "        hintContent: \"" << stA->getName() << " - " << stB->getName() << "\"," << endl;
+            out << "        balloonContent: \"" << stA->getName() << " - " << stB->getName() << "\"" << endl;
+            out << "    }" << endl;
+            out << "}, {" << endl;
+            out << "    draggable: false," << endl;
+            out << "    strokeColor: \"#00ff00\"," << endl;
+            out << "    strokeWidth: 5" << endl;
+            out << "});" << endl;
+            out << jsMapVar << ".geoObjects.add(l" << i << ");" << endl;
+        }
+        Road r = roads[roads.size() - 1];
+        Station *lastStation = r.getEnd();
+        out << "p" << roads.size() << " = new ymaps.Placemark([" << lastStation->getLatitude() << ", " << lastStation->getLongitude() << "], {" << endl;
+        out << "    hintContent: '" << lastStation->getName() << "'," << endl;
+        out << "    balloonContent: '" << lastStation->getName() << "'," << endl;
+        out << "});" << endl;
+        out << jsMapVar << ".geoObjects.add(p" << roads.size() << ");" << endl;
+
+        return QString("");
+
+    } else if (start == NULL) {
+        return pathStationA;
+    } else {
+        return pathStationB;
+    }
+}
+
+void MapCreator::setPathStationA(QString name)
+{
+    pathStationA = name;
+}
+
+void MapCreator::setPathStationB(QString name)
+{
+    pathStationB = name;
+}

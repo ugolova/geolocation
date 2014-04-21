@@ -7,6 +7,7 @@
 #include <QDir>
 #include <container/serialization.h>
 #include <container/algorithm.h>
+#include "controller_gui.h"
 #include <QDebug>
 
 using namespace std;
@@ -25,17 +26,22 @@ private:
     double mapCenterLat;
     double mapCenterLon;
     MultiGraph<double, Station> *container;
+    QString pathStationA;
+    QString pathStationB;
+
 
     void addStations(ofstream& out);
     void addLinks(ofstream& out);
-    void addShortestPath(ofstream& out);
+    QString addShortestPath(ofstream& out);
 
 public:
     MapCreator(MapMode mode);
     const char *getMapFilePath();
-    void makeHTML(MakeMode makeMode);
+    QString makeHTML(MakeMode makeMode);
     void setContainer(MultiGraph<double, Station> *container);
     MultiGraph<double, Station> *getContainer();
+    void setPathStationA(QString name);
+    void setPathStationB(QString name);
 };
 
 #endif // MAPCREATOR_H

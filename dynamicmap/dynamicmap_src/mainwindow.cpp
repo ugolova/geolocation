@@ -171,7 +171,15 @@ void MainWindow::exportFile()
 void MainWindow::on_button_search_clicked()
 {
     qDebug() << "Making route from " << ui->lineEdit_from->text() << " to " << ui->lineEdit_to->text();
+    mapSearch->setPathStationA(ui->lineEdit_from->text());
+    mapSearch->setPathStationB(ui->lineEdit_to->text());
+    QString result = mapSearch->makeHTML(MAKE_SHORTEST_PATH);
     ui->webView_search->reload();
+    if (result != "") {
+        QMessageBox msgBox;
+        msgBox.setText("Станция \"" + result + "\" не найдена!");
+        msgBox.exec();
+    }
 }
 
 void MainWindow::on_button_addStation_clicked()

@@ -10,6 +10,7 @@
 #include "controller_gui.h"
 #include <QModelIndex>
 #include <QSignalMapper>
+#include <QMessageBox>
 
 namespace Ui {
 class MainWindow;
