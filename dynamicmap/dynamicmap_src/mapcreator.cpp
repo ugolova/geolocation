@@ -7,15 +7,15 @@ MapCreator::MapCreator(MapMode mode):
     mapFilePath = (QDir::toNativeSeparators(QDir::tempPath()) + QDir::separator()).toStdString() + "dynamicmap_";
     htmlTitle = "DynamicMap";
     switch (this->mode) {
-    case SEARCH:
+    case MAP_SEARCH:
         mapFilePath += "search";
         htmlTitle += "Search";
         break;
-    case STATIONS:
+    case MAP_STATIONS:
         mapFilePath += "stations";
         htmlTitle += "Stations";
         break;
-    case LINKS:
+    case MAP_LINKS:
         mapFilePath += "links";
         htmlTitle += "Links";
         break;
@@ -35,7 +35,7 @@ const char* MapCreator::getMapFilePath()
     return mapFilePath.c_str();
 }
 
-void MapCreator::makeHTML()
+void MapCreator::makeHTML(MakeMode makeMode)
 {
     ofstream out;
     out.open(mapFilePath.c_str());
@@ -63,9 +63,13 @@ void MapCreator::makeHTML()
     out << "        new ymaps.control.ZoomControl()" << endl;
     out << "    );" << endl;
 
-    addStations(out);
-    if (mode == LINKS) {
-        addLinks(out);
+    if (makeMode == MAKE_DEFAULT) {
+        addStations(out);
+        if (mode == MAP_LINKS) {
+           addLinks(out);
+        }
+    } else if (makeMode == MAKE_SHORTEST_PATH) {
+        addShortestPath(out);
     }
 
     out << "}" << endl;
@@ -150,3 +154,8 @@ void MapCreator::addLinks(ofstream& out)
     out << "});" << endl;
     out << jsMapVar << ".geoObjects.add(l" << id << ");" << endl;
 }
+
+ void MapCreator::addShortestPath(ofstream& out)
+ {
+    //Algorithm::findShortestPath(container, )
+ }

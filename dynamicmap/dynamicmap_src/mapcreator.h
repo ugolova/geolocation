@@ -6,11 +6,13 @@
 #include <string>
 #include <QDir>
 #include <container/serialization.h>
+#include <container/algorithm.h>
 #include <QDebug>
 
 using namespace std;
 
-enum MapMode { SEARCH, STATIONS, LINKS };
+enum MapMode { MAP_SEARCH, MAP_STATIONS, MAP_LINKS };
+enum MakeMode { MAKE_DEFAULT, MAKE_SHORTEST_PATH };
 
 class MapCreator
 {
@@ -26,11 +28,12 @@ private:
 
     void addStations(ofstream& out);
     void addLinks(ofstream& out);
+    void addShortestPath(ofstream& out);
 
 public:
     MapCreator(MapMode mode);
     const char *getMapFilePath();
-    void makeHTML();
+    void makeHTML(MakeMode makeMode);
     void setContainer(MultiGraph<double, Station> *container);
     MultiGraph<double, Station> *getContainer();
 };

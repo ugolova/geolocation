@@ -22,9 +22,9 @@ MainWindow::MainWindow(QWidget *parent) :
     loginDialog = new LoginDialog();
     container = new MultiGraph<double, Station>();
 
-    mapSearch = new MapCreator(SEARCH);
+    mapSearch = new MapCreator(MAP_SEARCH);
     mapSearch->setContainer(container);
-    mapSearch->makeHTML();
+    mapSearch->makeHTML(MAKE_DEFAULT);
     QString mapSearchPath = "file:///" + QString(mapSearch->getMapFilePath());
     qDebug() << "mapSearchPath: " << mapSearchPath;
     ui->webView_search->load(QUrl(mapSearchPath));
@@ -61,18 +61,18 @@ void MainWindow::openLoginDialog()
             setWindowTitle(WINDOW_TITLE + " - " + Authentication::getCurrentUser());
 
             if (mapStations == NULL) {
-                mapStations = new MapCreator(STATIONS);
+                mapStations = new MapCreator(MAP_STATIONS);
                 mapStations->setContainer(container);
-                mapStations->makeHTML();
+                mapStations->makeHTML(MAKE_DEFAULT);
                 QString mapStationsPath = "file:///" + QString(mapStations->getMapFilePath());
                 qDebug() << "mapStationsPath: " << mapStationsPath;
                 ui->webView_stations->load(QUrl(mapStationsPath));
             }
 
             if (mapLinks == NULL) {
-                mapLinks = new MapCreator(LINKS);
+                mapLinks = new MapCreator(MAP_LINKS);
                 mapLinks->setContainer(container);
-                mapLinks->makeHTML();
+                mapLinks->makeHTML(MAKE_DEFAULT);
                 QString mapLinksPath = "file:///" + QString(mapLinks->getMapFilePath());
                 qDebug() << "mapLinksPath: " << mapLinksPath;
                 ui->webView_links->load(QUrl(mapLinksPath));
@@ -116,12 +116,12 @@ void MainWindow::importFile()
         mapLinks->setContainer(newContainer);
     }
 
-    mapSearch->makeHTML();
+    mapSearch->makeHTML(MAKE_DEFAULT);
     if (mapStations != NULL) {
-        mapStations->makeHTML();
+        mapStations->makeHTML(MAKE_DEFAULT);
     }
     if (mapLinks != NULL) {
-        mapLinks->makeHTML();
+        mapLinks->makeHTML(MAKE_DEFAULT);
     }
 
     delete container;
