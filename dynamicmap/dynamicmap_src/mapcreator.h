@@ -9,6 +9,7 @@
 #include <container/algorithm.h>
 #include "controller_gui.h"
 #include <QDebug>
+#include <QTableWidget>
 
 using namespace std;
 
@@ -28,7 +29,7 @@ private:
     MultiGraph<double, Station> *container;
     QString pathStationA;
     QString pathStationB;
-
+    QTableWidget *tableSearch;
 
     void addStations(ofstream& out);
     void addLinks(ofstream& out);
@@ -42,6 +43,7 @@ public:
     MultiGraph<double, Station> *getContainer();
     void setPathStationA(QString name);
     void setPathStationB(QString name);
+    void setTableSearch(QTableWidget *tableSearch);
 };
 
 #endif // MAPCREATOR_H

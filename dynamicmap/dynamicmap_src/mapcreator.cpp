@@ -173,6 +173,13 @@ QString MapCreator::addShortestPath(ofstream& out)
             Station *stA = r.getStart();
             Station *stB = r.getEnd();
 
+            // adding item to table
+            int rowNum = tableSearch->rowCount();
+            QTableWidgetItem *newItem = new QTableWidgetItem(QString::fromStdString(stA->getName()));
+            newItem->setFlags(newItem->flags() ^ Qt::ItemIsEditable);
+            tableSearch->insertRow(rowNum);
+            tableSearch->setItem(rowNum, 0, newItem);
+
             // stations
             out << "p" << i << " = new ymaps.Placemark([" << stA->getLatitude() << ", " << stA->getLongitude() << "], {" << endl;
             out << "    hintContent: '" << stA->getName() << "'," << endl;
@@ -208,6 +215,13 @@ QString MapCreator::addShortestPath(ofstream& out)
         out << "});" << endl;
         out << jsMapVar << ".geoObjects.add(p" << roads.size() << ");" << endl;
 
+        // adding item to table
+        int rowNum = tableSearch->rowCount();
+        QTableWidgetItem *newItem = new QTableWidgetItem(QString::fromStdString(lastStation->getName()));
+        newItem->setFlags(newItem->flags() ^ Qt::ItemIsEditable);
+        tableSearch->insertRow(rowNum);
+        tableSearch->setItem(rowNum, 0, newItem);
+
         return QString("");
 
     } else if (start == NULL) {
@@ -225,4 +239,9 @@ void MapCreator::setPathStationA(QString name)
 void MapCreator::setPathStationB(QString name)
 {
     pathStationB = name;
+}
+
+void MapCreator::setTableSearch(QTableWidget *table)
+{
+    tableSearch = table;
 }
