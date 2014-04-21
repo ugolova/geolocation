@@ -33,7 +33,6 @@ HEADERS  += mainwindow.h \
     container/algorithm.h \
     container/road.h \
     container/dynamic_array.h \
-    container/dynamic_array_utill.h \
     controller_gui.h
 
 FORMS    += mainwindow.ui \
