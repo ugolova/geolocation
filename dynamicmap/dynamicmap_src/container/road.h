@@ -5,15 +5,14 @@
 
 class Road
 {
-    friend class RoadTest;
 private:
-    Station* start;
+	Station* start;
 	Station* end;
 	double lenght;
 public:
 
 	Road();
-	Road(Station* start, Station* end, double lenght);
+	Road(Station* start, Station* end);
 	Station* getStart();
 	Station* getEnd();
 	void setStart(Station* start);

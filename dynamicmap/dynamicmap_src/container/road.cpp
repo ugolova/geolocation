@@ -5,11 +5,10 @@ Road::Road()
 {
 }
 
-Road::Road(Station* start, Station* end, double lenght)
+Road::Road(Station* start, Station* end)
 {
 	this->start = start;
 	this->end = end; 
-	this->lenght = lenght;
 }
 Station* Road::getStart()
 {
