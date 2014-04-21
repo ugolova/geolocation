@@ -7,6 +7,9 @@
 #include "logindialog.h"
 #include "mapcreator.h"
 #include "authentication.h"
+#include "controller_gui.h"
+#include <QModelIndex>
+#include <QSignalMapper>
 
 namespace Ui {
 class MainWindow;
@@ -30,6 +33,8 @@ private slots:
     void on_button_search_clicked();
     void on_button_addStation_clicked();
     void on_button_linkStations_clicked();
+    void tableStationsMenuRequested(QPoint pos);
+    void deleteStation(int row);
 
 private:
     Ui::MainWindow *ui;
@@ -39,6 +44,9 @@ private:
     MapCreator *mapLinks;
     static const QString WINDOW_TITLE;
     MultiGraph<double, Station> *container;
+    QMenu *stationsContextMenu;
+    QAction *deleteStationAction;
+    QSignalMapper *signalMapper;
 };
 
 #endif // MAINWINDOW_H

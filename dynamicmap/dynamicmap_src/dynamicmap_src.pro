@@ -20,7 +20,8 @@ SOURCES += main.cpp\
     container/serialization.cpp \
     container/station.cpp \
     container/algorithm.cpp \
-    container/road.cpp
+    container/road.cpp \
+    controller_gui.cpp
 
 HEADERS  += mainwindow.h \
     logindialog.h \
@@ -32,7 +33,8 @@ HEADERS  += mainwindow.h \
     container/algorithm.h \
     container/road.h \
     container/dynamic_array.h \
-    container/dynamic_array_utill.h
+    container/dynamic_array_utill.h \
+    controller_gui.h
 
 FORMS    += mainwindow.ui \
     logindialog.ui

@@ -33,6 +33,21 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->logout, SIGNAL(triggered()), this, SLOT(logout()));
     connect(ui->import_file, SIGNAL(triggered()), this, SLOT(importFile()));
     connect(ui->export_file, SIGNAL(triggered()), this, SLOT(exportFile()));
+
+    // signal mapper
+    signalMapper = new QSignalMapper(this);
+    connect(signalMapper, SIGNAL(mapped(int)), SLOT(deleteStation(int)));
+
+    // stations table context menu
+    ui->table_stations->setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(ui->table_stations, SIGNAL(customContextMenuRequested(QPoint)), SLOT(tableStationsMenuRequested(QPoint)));
+
+    // stations table context menu items
+    stationsContextMenu = new QMenu(this);
+    deleteStationAction = new QAction("Удалить", this);
+    stationsContextMenu->addAction(deleteStationAction);
+    connect(deleteStationAction, SIGNAL(triggered()), signalMapper, SLOT(map()));
+
 }
 
 MainWindow::~MainWindow()
@@ -43,6 +58,8 @@ MainWindow::~MainWindow()
     delete mapLinks;
     delete loginDialog;
     delete container;
+    delete stationsContextMenu;
+    delete deleteStationAction;
 }
 
 void MainWindow::openLoginDialog()
@@ -148,22 +165,52 @@ void MainWindow::on_button_search_clicked()
 
 void MainWindow::on_button_addStation_clicked()
 {
-    qDebug() << "Added station: "
-             << ui->lineEdit_stationName->text()
-             << ", type: "
-             << ui->comboBox_stationType->currentText()
-             << ", lat: "
-             << ui->lineEdit_stationLatitude->text()
-             << ", lon: "
-             << ui->lineEdit_stationLongitude->text();
+    ControllerGUI::addStation(
+                container,
+                ui->lineEdit_stationName->text(),
+                ui->comboBox_stationType->currentIndex(),
+                ui->lineEdit_stationLatitude->text(),
+                ui->lineEdit_stationLongitude->text());
+
+    // adding item to table
+    int rowNum = ui->table_stations->rowCount();
+    QTableWidgetItem *newItem = new QTableWidgetItem(ui->lineEdit_stationName->text());
+    newItem->setFlags(newItem->flags() ^ Qt::ItemIsEditable);
+    ui->table_stations->insertRow(rowNum);
+    ui->table_stations->setItem(rowNum, 0, newItem);
+
+    // reset form
+    ui->lineEdit_stationName->setText("");
+    ui->comboBox_stationType->setCurrentIndex(0);
+    ui->lineEdit_stationLatitude->setText("");
+    ui->lineEdit_stationLongitude->setText("");
+
+    // update map
+    mapStations->makeHTML(MAKE_DEFAULT);
     ui->webView_stations->reload();
 }
 
 void MainWindow::on_button_linkStations_clicked()
 {
     qDebug() << "Added link: "
-             << ui->comboBox_stationA->currentText()
+             << ui->lineEdit_stationA->text()
              << " - "
-             << ui->comboBox_stationB->currentText();
+             << ui->lineEdit_stationB->text();
     ui->webView_links->reload();
+}
+
+void MainWindow::tableStationsMenuRequested(QPoint pos)
+{
+    signalMapper->setMapping(deleteStationAction, ui->table_stations->indexAt(pos).row());
+    stationsContextMenu->popup(ui->table_stations->viewport()->mapToGlobal(pos));
+}
+
+void MainWindow::deleteStation(int row)
+{
+    ControllerGUI::delStation(
+                container,
+                ui->table_stations->model()->index(row, 0).data().toString());
+    ui->table_stations->removeRow(row);
+    mapStations->makeHTML(MAKE_DEFAULT);
+    ui->webView_stations->reload();
 }

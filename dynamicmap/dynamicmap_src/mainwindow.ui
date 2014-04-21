@@ -18,7 +18,7 @@
     <item row="0" column="0">
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>2</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="tab_search">
        <property name="enabled">
@@ -312,7 +312,7 @@
                  <number>0</number>
                 </property>
                 <item row="0" column="0">
-                 <widget class="QTableWidget" name="tableWidget">
+                 <widget class="QTableWidget" name="table_stations">
                   <property name="rowCount">
                    <number>0</number>
                   </property>
@@ -370,7 +370,13 @@
                 </property>
                </widget>
               </item>
-              <item row="2" column="1">
+              <item row="0" column="1">
+               <widget class="QLineEdit" name="lineEdit_stationA"/>
+              </item>
+              <item row="1" column="1">
+               <widget class="QLineEdit" name="lineEdit_stationB"/>
+              </item>
+              <item row="3" column="1">
                <widget class="QPushButton" name="button_linkStations">
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -383,22 +389,14 @@
                 </property>
                </widget>
               </item>
-              <item row="0" column="1">
-               <widget class="QComboBox" name="comboBox_stationA">
-                <item>
-                 <property name="text">
-                  <string>Выберите станцию</string>
-                 </property>
-                </item>
-               </widget>
+              <item row="2" column="1">
+               <widget class="QLineEdit" name="lineEdit_distance"/>
               </item>
-              <item row="1" column="1">
-               <widget class="QComboBox" name="comboBox_stationB">
-                <item>
-                 <property name="text">
-                  <string>Выберите станцию</string>
-                 </property>
-                </item>
+              <item row="2" column="0">
+               <widget class="QLabel" name="label_distance">
+                <property name="text">
+                 <string>Расстояние</string>
+                </property>
                </widget>
               </item>
              </layout>
@@ -413,7 +411,7 @@
                 <rect>
                  <x>0</x>
                  <y>0</y>
-                 <width>217</width>
+                 <width>158</width>
                  <height>192</height>
                 </rect>
                </property>
@@ -446,6 +444,11 @@
                   <column>
                    <property name="text">
                     <string>Станция B</string>
+                   </property>
+                  </column>
+                  <column>
+                   <property name="text">
+                    <string>Расстояние</string>
                    </property>
                   </column>
                  </widget>
