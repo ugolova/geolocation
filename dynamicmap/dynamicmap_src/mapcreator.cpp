@@ -4,7 +4,7 @@ MapCreator::MapCreator(MapMode mode):
     container(NULL)
 {
     this->mode = mode;
-    mapFilePath = (QDir::toNativeSeparators(QDir::tempPath()) + QDir::separator()).toStdString() + "dynamicmap_";
+    mapFilePath = QDir::toNativeSeparators(QDir::tempPath()) + QDir::separator() + "dynamicmap_";
     htmlTitle = "DynamicMap";
     switch (this->mode) {
     case MAP_SEARCH:
@@ -30,16 +30,19 @@ MapCreator::MapCreator(MapMode mode):
     mapCenterLon = 30.313497;
 }
 
-const char* MapCreator::getMapFilePath()
+QString MapCreator::getMapFilePath()
 {
-    return mapFilePath.c_str();
+    return mapFilePath;
 }
 
 QString MapCreator::makeHTML(MakeMode makeMode)
 {
     QString result = "";
-    ofstream out;
-    out.open(mapFilePath.c_str());
+
+    QFile file(mapFilePath);
+    file.open(QIODevice::WriteOnly | QIODevice::Text);
+    QTextStream out(&file);
+
     out << "<!DOCTYPE html>" << endl;
     out << "<html>" << endl;
     out << "<head>" << endl;
@@ -81,7 +84,7 @@ QString MapCreator::makeHTML(MakeMode makeMode)
     out << "</body>" << endl;
     out << "</html>" << endl;
 
-    out.close();
+    file.close();
 
     return result;
 }
@@ -96,26 +99,26 @@ MultiGraph<double, Station>* MapCreator::getContainer()
     return container;
 }
 
-void MapCreator::addStations(ofstream& out)
+void MapCreator::addStations(QTextStream& out)
 {
     if (container != NULL) {
         DynamicArray<Station> *arr = container->getVertexs();
         for (int i = 0; i < arr->getSize(); i++) {
             Station *st = arr->get(i);
             out << "p" << i << " = new ymaps.Placemark([" << st->getLatitude() << ", " << st->getLongitude() << "], {" << endl;
-            out << "    hintContent: '" << st->getName() << "'," << endl;
-            out << "    balloonContent: '" << st->getName() << "'," << endl;
+            out << "    hintContent: '" << QString::fromStdString(st->getName()) << "'," << endl;
+            out << "    balloonContent: '" << QString::fromStdString(st->getName()) << "'," << endl;
             out << "});" << endl;
             out << jsMapVar << ".geoObjects.add(p" << i << ");" << endl;
 
-            qDebug() << "Written to HTML - Station: " << st->getName().c_str() << ", "
+            qDebug() << "Written to HTML - Station: " << QString::fromStdString(st->getName()) << ", "
                      << "Lat: " << st->getLatitude() << ", "
                      << "Lon: " << st->getLongitude();
         }
     }
 }
 
-void MapCreator::addLinks(ofstream& out)
+void MapCreator::addLinks(QTextStream& out)
 {
     int id = 12;
     out << "l" << id << " = new ymaps.GeoObject({" << endl;
@@ -158,7 +161,7 @@ void MapCreator::addLinks(ofstream& out)
     out << jsMapVar << ".geoObjects.add(l" << id << ");" << endl;
 }
 
-QString MapCreator::addShortestPath(ofstream& out)
+QString MapCreator::addShortestPath(QTextStream& out)
 {
     Station *start = ControllerGUI::getStationByName(container, pathStationA);
     Station *end = ControllerGUI::getStationByName(container, pathStationB);
@@ -167,7 +170,7 @@ QString MapCreator::addShortestPath(ofstream& out)
         double length = 0;
         std::vector<Road> roads = Algorithm::findShortestPath(container, start, end, length);
 
-        for(int i = 0; i < roads.size(); i++) {
+        for(std::vector<int>::size_type i = 0; i < roads.size(); i++) {
 
             Road r = roads[i];
             Station *stA = r.getStart();
@@ -182,8 +185,8 @@ QString MapCreator::addShortestPath(ofstream& out)
 
             // stations
             out << "p" << i << " = new ymaps.Placemark([" << stA->getLatitude() << ", " << stA->getLongitude() << "], {" << endl;
-            out << "    hintContent: '" << stA->getName() << "'," << endl;
-            out << "    balloonContent: '" << stA->getName() << "'," << endl;
+            out << "    hintContent: '" << QString::fromStdString(stA->getName()) << "'," << endl;
+            out << "    balloonContent: '" << QString::fromStdString(stA->getName()) << "'," << endl;
             out << "});" << endl;
             out << jsMapVar << ".geoObjects.add(p" << i << ");" << endl;
 
@@ -197,8 +200,8 @@ QString MapCreator::addShortestPath(ofstream& out)
             out << "        ]" << endl;
             out << "    }," << endl;
             out << "    properties:{" << endl;
-            out << "        hintContent: \"" << stA->getName() << " - " << stB->getName() << "\"," << endl;
-            out << "        balloonContent: \"" << stA->getName() << " - " << stB->getName() << "\"" << endl;
+            out << "        hintContent: \"" << QString::fromStdString(stA->getName()) << " - " << QString::fromStdString(stB->getName()) << "\"," << endl;
+            out << "        balloonContent: \"" << QString::fromStdString(stA->getName()) << " - " << QString::fromStdString(stB->getName()) << "\"" << endl;
             out << "    }" << endl;
             out << "}, {" << endl;
             out << "    draggable: false," << endl;
@@ -210,8 +213,8 @@ QString MapCreator::addShortestPath(ofstream& out)
         Road r = roads[roads.size() - 1];
         Station *lastStation = r.getEnd();
         out << "p" << roads.size() << " = new ymaps.Placemark([" << lastStation->getLatitude() << ", " << lastStation->getLongitude() << "], {" << endl;
-        out << "    hintContent: '" << lastStation->getName() << "'," << endl;
-        out << "    balloonContent: '" << lastStation->getName() << "'," << endl;
+        out << "    hintContent: '" << QString::fromStdString(lastStation->getName()) << "'," << endl;
+        out << "    balloonContent: '" << QString::fromStdString(lastStation->getName()) << "'," << endl;
         out << "});" << endl;
         out << jsMapVar << ".geoObjects.add(p" << roads.size() << ");" << endl;
 

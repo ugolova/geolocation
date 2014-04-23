@@ -20,10 +20,10 @@ class MapCreator
 {
 private:
     MapMode mode;
-    string mapFilePath;
-    string htmlTitle;
-    string mapApiUrl;
-    string jsMapVar;
+    QString mapFilePath;
+    QString htmlTitle;
+    QString mapApiUrl;
+    QString jsMapVar;
     double mapCenterLat;
     double mapCenterLon;
     MultiGraph<double, Station> *container;
@@ -31,13 +31,13 @@ private:
     QString pathStationB;
     QTableWidget *tableSearch;
 
-    void addStations(ofstream& out);
-    void addLinks(ofstream& out);
-    QString addShortestPath(ofstream& out);
+    void addStations(QTextStream& out);
+    void addLinks(QTextStream& out);
+    QString addShortestPath(QTextStream& out);
 
 public:
     MapCreator(MapMode mode);
-    const char *getMapFilePath();
+    QString getMapFilePath();
     QString makeHTML(MakeMode makeMode);
     void setContainer(MultiGraph<double, Station> *container);
     MultiGraph<double, Station> *getContainer();
