@@ -33,6 +33,8 @@ private:
 
     void addStations(QTextStream& out, bool withLinks);
     QString addShortestPath(QTextStream& out);
+    std::string getStationColor(int stationType);
+    std::string getLineColor(int startStationType, int endStationType);
 
 public:
     MapCreator(MapMode mode);

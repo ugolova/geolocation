@@ -110,6 +110,8 @@ void MapCreator::addStations(QTextStream& out, bool withLinks)
             out << "p" << i << " = new ymaps.Placemark([" << st->getLatitude() << ", " << st->getLongitude() << "], {" << endl;
             out << "    hintContent: '" << QString::fromStdString(st->getName()) << "'," << endl;
             out << "    balloonContent: '" << QString::fromStdString(st->getName()) << "'," << endl;
+            out << "}, {" << endl;
+            out << "    preset: '" << QString::fromStdString(getStationColor(st->getType())) << "'" << endl;
             out << "});" << endl;
             out << jsMapVar << ".geoObjects.add(p" << i << ");" << endl;
 
@@ -133,7 +135,7 @@ void MapCreator::addStations(QTextStream& out, bool withLinks)
                             out << "    }" << endl;
                             out << "}, {" << endl;
                             out << "    draggable: false," << endl;
-                            out << "    strokeColor: \"#00ff00\"," << endl;
+                            out << "    strokeColor: \"" << QString::fromStdString(getLineColor(st->getType(), st2->getType())) << "\"," << endl;
                             out << "    strokeWidth: 5" << endl;
                             out << "});" << endl;
                             out << jsMapVar << ".geoObjects.add(l" << i << j << ");" << endl;
@@ -141,11 +143,6 @@ void MapCreator::addStations(QTextStream& out, bool withLinks)
                     }
                 }
             }
-
-            /*qDebug() << "Written to HTML - Station: " << QString::fromStdString(st->getName()) << ", "
-                     << "Lat: " << st->getLatitude() << ", "
-                     << "Lon: " << st->getLongitude();*/
-
         }
     }
 }
@@ -176,6 +173,8 @@ QString MapCreator::addShortestPath(QTextStream& out)
             out << "p" << i << " = new ymaps.Placemark([" << stA->getLatitude() << ", " << stA->getLongitude() << "], {" << endl;
             out << "    hintContent: '" << QString::fromStdString(stA->getName()) << "'," << endl;
             out << "    balloonContent: '" << QString::fromStdString(stA->getName()) << "'," << endl;
+            out << "}, {" << endl;
+            out << "    preset: '" << QString::fromStdString(getStationColor(stA->getType())) << "'" << endl;
             out << "});" << endl;
             out << jsMapVar << ".geoObjects.add(p" << i << ");" << endl;
 
@@ -194,25 +193,30 @@ QString MapCreator::addShortestPath(QTextStream& out)
             out << "    }" << endl;
             out << "}, {" << endl;
             out << "    draggable: false," << endl;
-            out << "    strokeColor: \"#00ff00\"," << endl;
+            out << "    strokeColor: \"" << QString::fromStdString(getLineColor(stA->getType(), stB->getType())) << "\"," << endl;
             out << "    strokeWidth: 5" << endl;
             out << "});" << endl;
             out << jsMapVar << ".geoObjects.add(l" << i << ");" << endl;
         }
-        Road r = roads[roads.size() - 1];
-        Station *lastStation = r.getEnd();
-        out << "p" << roads.size() << " = new ymaps.Placemark([" << lastStation->getLatitude() << ", " << lastStation->getLongitude() << "], {" << endl;
-        out << "    hintContent: '" << QString::fromStdString(lastStation->getName()) << "'," << endl;
-        out << "    balloonContent: '" << QString::fromStdString(lastStation->getName()) << "'," << endl;
-        out << "});" << endl;
-        out << jsMapVar << ".geoObjects.add(p" << roads.size() << ");" << endl;
 
-        // adding item to table
-        int rowNum = tableSearch->rowCount();
-        QTableWidgetItem *newItem = new QTableWidgetItem(QString::fromStdString(lastStation->getName()));
-        newItem->setFlags(newItem->flags() ^ Qt::ItemIsEditable);
-        tableSearch->insertRow(rowNum);
-        tableSearch->setItem(rowNum, 0, newItem);
+        if (roads.size() > 0) {
+            Road r = roads[roads.size() - 1];
+            Station *lastStation = r.getEnd();
+            out << "p" << roads.size() << " = new ymaps.Placemark([" << lastStation->getLatitude() << ", " << lastStation->getLongitude() << "], {" << endl;
+            out << "    hintContent: '" << QString::fromStdString(lastStation->getName()) << "'," << endl;
+            out << "    balloonContent: '" << QString::fromStdString(lastStation->getName()) << "'," << endl;
+            out << "}, {" << endl;
+            out << "    preset: '" << QString::fromStdString(getStationColor(lastStation->getType())) << "'" << endl;
+            out << "});" << endl;
+            out << jsMapVar << ".geoObjects.add(p" << roads.size() << ");" << endl;
+
+            // adding item to table
+            int rowNum = tableSearch->rowCount();
+            QTableWidgetItem *newItem = new QTableWidgetItem(QString::fromStdString(lastStation->getName()));
+            newItem->setFlags(newItem->flags() ^ Qt::ItemIsEditable);
+            tableSearch->insertRow(rowNum);
+            tableSearch->setItem(rowNum, 0, newItem);
+        }
 
         return QString("");
 
@@ -221,6 +225,37 @@ QString MapCreator::addShortestPath(QTextStream& out)
     } else {
         return pathStationB;
     }
+}
+
+std::string MapCreator::getStationColor(int stationType)
+{
+    switch (stationType) {
+    case 0:
+        return "twirl#blueIcon";
+    case 1:
+        return "twirl#redIcon";
+    case 2:
+        return "twirl#violetIcon";
+    default:
+        return "twirl#blueIcon";
+    }
+}
+
+std::string MapCreator::getLineColor(int startStationType, int endStationType)
+{
+    if (startStationType == 0 && endStationType == 0) {
+        return "#42aaff";
+    }
+    if (startStationType == 1 && endStationType == 1) {
+        return "#ff0000";
+    }
+    if ((startStationType == 0 && endStationType == 2) || (startStationType == 2 && endStationType == 0)) {
+        return "#42aaff";
+    }
+    if ((startStationType == 1 && endStationType == 2) || (startStationType == 2 && endStationType == 1)) {
+        return "#ff0000";
+    }
+    return "#000000";
 }
 
 void MapCreator::setPathStationA(QString name)
