@@ -21,9 +21,9 @@ class MapCreator
 private:
     MapMode mode;
     QString mapFilePath;
-    QString htmlTitle;
-    QString mapApiUrl;
-    QString jsMapVar;
+    std::string htmlTitle;
+    std::string mapApiUrl;
+    std::string jsMapVar;
     double mapCenterLat;
     double mapCenterLon;
     MultiGraph<double, Station> *container;
@@ -31,8 +31,8 @@ private:
     QString pathStationB;
     QTableWidget *tableSearch;
 
-    void addStations(QTextStream& out, bool withLinks);
-    QString addShortestPath(QTextStream& out);
+    void addStations(ofstream& out, bool withLinks);
+    QString addShortestPath(ofstream& out);
     std::string getStationColor(int stationType);
     std::string getLineColor(int startStationType, int endStationType);
 

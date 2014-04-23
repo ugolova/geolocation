@@ -39,9 +39,8 @@ QString MapCreator::makeHTML(MakeMode makeMode)
 {
     QString result = "";
 
-    QFile file(mapFilePath);
-    file.open(QIODevice::WriteOnly | QIODevice::Text);
-    QTextStream out(&file);
+    ofstream out;
+    out.open(mapFilePath.toStdString().c_str());
 
     out << "<!DOCTYPE html>" << endl;
     out << "<html>" << endl;
@@ -85,7 +84,7 @@ QString MapCreator::makeHTML(MakeMode makeMode)
     out << "</body>" << endl;
     out << "</html>" << endl;
 
-    file.close();
+    out.close();
 
     return result;
 }
@@ -100,7 +99,7 @@ MultiGraph<double, Station>* MapCreator::getContainer()
     return container;
 }
 
-void MapCreator::addStations(QTextStream& out, bool withLinks)
+void MapCreator::addStations(ofstream& out, bool withLinks)
 {
     if (container != NULL) {
         DynamicArray<Station> *arr = container->getVertexs();
@@ -108,10 +107,10 @@ void MapCreator::addStations(QTextStream& out, bool withLinks)
         for (int i = 0; i < arrSize; i++) {
             Station *st = arr->get(i);
             out << "p" << i << " = new ymaps.Placemark([" << st->getLatitude() << ", " << st->getLongitude() << "], {" << endl;
-            out << "    hintContent: '" << QString::fromStdString(st->getName()) << "'," << endl;
-            out << "    balloonContent: '" << QString::fromStdString(st->getName()) << "'," << endl;
+            out << "    hintContent: '" << st->getName().c_str() << "'," << endl;
+            out << "    balloonContent: '" << st->getName().c_str() << "'," << endl;
             out << "}, {" << endl;
-            out << "    preset: '" << QString::fromStdString(getStationColor(st->getType())) << "'" << endl;
+            out << "    preset: '" << getStationColor(st->getType()) << "'" << endl;
             out << "});" << endl;
             out << jsMapVar << ".geoObjects.add(p" << i << ");" << endl;
 
@@ -130,12 +129,12 @@ void MapCreator::addStations(QTextStream& out, bool withLinks)
                             out << "        ]" << endl;
                             out << "    }," << endl;
                             out << "    properties:{" << endl;
-                            out << "        hintContent: \"" << QString::fromStdString(st->getName()) << " - " << QString::fromStdString(st2->getName()) << "\"," << endl;
-                            out << "        balloonContent: \"" << QString::fromStdString(st->getName()) << " - " << QString::fromStdString(st2->getName()) << "\"" << endl;
+                            out << "        hintContent: \"" << st->getName() << " - " << st2->getName() << "\"," << endl;
+                            out << "        balloonContent: \"" << st->getName() << " - " << st2->getName() << "\"" << endl;
                             out << "    }" << endl;
                             out << "}, {" << endl;
                             out << "    draggable: false," << endl;
-                            out << "    strokeColor: \"" << QString::fromStdString(getLineColor(st->getType(), st2->getType())) << "\"," << endl;
+                            out << "    strokeColor: \"" << getLineColor(st->getType(), st2->getType()) << "\"," << endl;
                             out << "    strokeWidth: 5" << endl;
                             out << "});" << endl;
                             out << jsMapVar << ".geoObjects.add(l" << i << j << ");" << endl;
@@ -147,7 +146,7 @@ void MapCreator::addStations(QTextStream& out, bool withLinks)
     }
 }
 
-QString MapCreator::addShortestPath(QTextStream& out)
+QString MapCreator::addShortestPath(ofstream& out)
 {
     Station *start = ControllerGUI::getStationByName(container, pathStationA);
     Station *end = ControllerGUI::getStationByName(container, pathStationB);
@@ -171,10 +170,10 @@ QString MapCreator::addShortestPath(QTextStream& out)
 
             // stations
             out << "p" << i << " = new ymaps.Placemark([" << stA->getLatitude() << ", " << stA->getLongitude() << "], {" << endl;
-            out << "    hintContent: '" << QString::fromStdString(stA->getName()) << "'," << endl;
-            out << "    balloonContent: '" << QString::fromStdString(stA->getName()) << "'," << endl;
+            out << "    hintContent: '" << stA->getName() << "'," << endl;
+            out << "    balloonContent: '" << stA->getName() << "'," << endl;
             out << "}, {" << endl;
-            out << "    preset: '" << QString::fromStdString(getStationColor(stA->getType())) << "'" << endl;
+            out << "    preset: '" << getStationColor(stA->getType()) << "'" << endl;
             out << "});" << endl;
             out << jsMapVar << ".geoObjects.add(p" << i << ");" << endl;
 
@@ -188,12 +187,12 @@ QString MapCreator::addShortestPath(QTextStream& out)
             out << "        ]" << endl;
             out << "    }," << endl;
             out << "    properties:{" << endl;
-            out << "        hintContent: \"" << QString::fromStdString(stA->getName()) << " - " << QString::fromStdString(stB->getName()) << "\"," << endl;
-            out << "        balloonContent: \"" << QString::fromStdString(stA->getName()) << " - " << QString::fromStdString(stB->getName()) << "\"" << endl;
+            out << "        hintContent: \"" << stA->getName() << " - " << stB->getName() << "\"," << endl;
+            out << "        balloonContent: \"" << stA->getName() << " - " << stB->getName() << "\"" << endl;
             out << "    }" << endl;
             out << "}, {" << endl;
             out << "    draggable: false," << endl;
-            out << "    strokeColor: \"" << QString::fromStdString(getLineColor(stA->getType(), stB->getType())) << "\"," << endl;
+            out << "    strokeColor: \"" << getLineColor(stA->getType(), stB->getType()) << "\"," << endl;
             out << "    strokeWidth: 5" << endl;
             out << "});" << endl;
             out << jsMapVar << ".geoObjects.add(l" << i << ");" << endl;
@@ -203,10 +202,10 @@ QString MapCreator::addShortestPath(QTextStream& out)
             Road r = roads[roads.size() - 1];
             Station *lastStation = r.getEnd();
             out << "p" << roads.size() << " = new ymaps.Placemark([" << lastStation->getLatitude() << ", " << lastStation->getLongitude() << "], {" << endl;
-            out << "    hintContent: '" << QString::fromStdString(lastStation->getName()) << "'," << endl;
-            out << "    balloonContent: '" << QString::fromStdString(lastStation->getName()) << "'," << endl;
+            out << "    hintContent: '" << lastStation->getName() << "'," << endl;
+            out << "    balloonContent: '" << lastStation->getName() << "'," << endl;
             out << "}, {" << endl;
-            out << "    preset: '" << QString::fromStdString(getStationColor(lastStation->getType())) << "'" << endl;
+            out << "    preset: '" << getStationColor(lastStation->getType()) << "'" << endl;
             out << "});" << endl;
             out << jsMapVar << ".geoObjects.add(p" << roads.size() << ");" << endl;
 
