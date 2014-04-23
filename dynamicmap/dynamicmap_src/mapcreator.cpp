@@ -68,9 +68,10 @@ QString MapCreator::makeHTML(MakeMode makeMode)
     out << "    );" << endl;
 
     if (makeMode == MAKE_DEFAULT) {
-        addStations(out);
-        if (mode == MAP_LINKS) {
-           addLinks(out);
+        if (mode == MAP_LINKS || mode == MAP_SEARCH) {
+            addStations(out, true);
+        } else {
+            addStations(out, false);
         }
     } else if (makeMode == MAKE_SHORTEST_PATH) {
         result = addShortestPath(out);
@@ -99,11 +100,12 @@ MultiGraph<double, Station>* MapCreator::getContainer()
     return container;
 }
 
-void MapCreator::addStations(QTextStream& out)
+void MapCreator::addStations(QTextStream& out, bool withLinks)
 {
     if (container != NULL) {
         DynamicArray<Station> *arr = container->getVertexs();
-        for (int i = 0; i < arr->getSize(); i++) {
+        int arrSize = arr->getSize();
+        for (int i = 0; i < arrSize; i++) {
             Station *st = arr->get(i);
             out << "p" << i << " = new ymaps.Placemark([" << st->getLatitude() << ", " << st->getLongitude() << "], {" << endl;
             out << "    hintContent: '" << QString::fromStdString(st->getName()) << "'," << endl;
@@ -111,54 +113,41 @@ void MapCreator::addStations(QTextStream& out)
             out << "});" << endl;
             out << jsMapVar << ".geoObjects.add(p" << i << ");" << endl;
 
-            qDebug() << "Written to HTML - Station: " << QString::fromStdString(st->getName()) << ", "
+            if (withLinks) {
+                for (int j = 0; j < arrSize; j++) {
+                    if (i != j) {
+                        Station *st2 = arr->get(j);
+                        DynamicArray<double> *roads = container->getLenghtsByStation(st, st2);
+                        if (roads != 0 && roads->getSize() > 0) {
+                            out << "l" << i << j << " = new ymaps.GeoObject({" << endl;
+                            out << "    geometry: {" << endl;
+                            out << "        type: \"LineString\"," << endl;
+                            out << "        coordinates: [" << endl;
+                            out << "            [" << st->getLatitude() << ", " << st->getLongitude() << "]," << endl;
+                            out << "            [" << st2->getLatitude() << ", " << st2->getLongitude() << "]" << endl;
+                            out << "        ]" << endl;
+                            out << "    }," << endl;
+                            out << "    properties:{" << endl;
+                            out << "        hintContent: \"" << QString::fromStdString(st->getName()) << " - " << QString::fromStdString(st2->getName()) << "\"," << endl;
+                            out << "        balloonContent: \"" << QString::fromStdString(st->getName()) << " - " << QString::fromStdString(st2->getName()) << "\"" << endl;
+                            out << "    }" << endl;
+                            out << "}, {" << endl;
+                            out << "    draggable: false," << endl;
+                            out << "    strokeColor: \"#00ff00\"," << endl;
+                            out << "    strokeWidth: 5" << endl;
+                            out << "});" << endl;
+                            out << jsMapVar << ".geoObjects.add(l" << i << j << ");" << endl;
+                        }
+                    }
+                }
+            }
+
+            /*qDebug() << "Written to HTML - Station: " << QString::fromStdString(st->getName()) << ", "
                      << "Lat: " << st->getLatitude() << ", "
-                     << "Lon: " << st->getLongitude();
+                     << "Lon: " << st->getLongitude();*/
+
         }
     }
-}
-
-void MapCreator::addLinks(QTextStream& out)
-{
-    int id = 12;
-    out << "l" << id << " = new ymaps.GeoObject({" << endl;
-    out << "    geometry: {" << endl;
-    out << "        type: \"LineString\"," << endl;
-    out << "        coordinates: [" << endl;
-    out << "            [59.991686, 30.221030]," << endl;
-    out << "            [59.989260, 30.255280]" << endl;
-    out << "        ]" << endl;
-    out << "    }," << endl;
-    out << "    properties:{" << endl;
-    out << "        hintContent: \"Яхтенная - Старая Деревня\"," << endl;
-    out << "        balloonContent: \"Яхтенная - Старая Деревня\"" << endl;
-    out << "    }" << endl;
-    out << "}, {" << endl;
-    out << "    draggable: false," << endl;
-    out << "    strokeColor: \"#00ff00\"," << endl;
-    out << "    strokeWidth: 5" << endl;
-    out << "});" << endl;
-    out << jsMapVar << ".geoObjects.add(l" << id << ");" << endl;
-
-    id = 23;
-    out << "l" << id << " = new ymaps.GeoObject({" << endl;
-    out << "    geometry: {" << endl;
-    out << "        type: \"LineString\"," << endl;
-    out << "        coordinates: [" << endl;
-    out << "            [59.989260, 30.255280]," << endl;
-    out << "            [60.008344, 30.258577]" << endl;
-    out << "        ]" << endl;
-    out << "    }," << endl;
-    out << "    properties:{" << endl;
-    out << "        hintContent: \"Старая Деревня - Комендантский проспект\"," << endl;
-    out << "        balloonContent: \"Старая Деревня - Комендантский проспект\"" << endl;
-    out << "    }" << endl;
-    out << "}, {" << endl;
-    out << "    draggable: false," << endl;
-    out << "    strokeColor: \"#0000ff\"," << endl;
-    out << "    strokeWidth: 5" << endl;
-    out << "});" << endl;
-    out << jsMapVar << ".geoObjects.add(l" << id << ");" << endl;
 }
 
 QString MapCreator::addShortestPath(QTextStream& out)

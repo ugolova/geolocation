@@ -49,7 +49,7 @@ void Algorithm::dijkstra(const Graph  &G, const int &source, const int &destinat
 	path.clear();
 	int p = destination;
 	path.push_back(destination);
-	while (p != source)
+    while (p != source && p != -1)
 	{
 		p = parent[p];
 		path.push_back(p);

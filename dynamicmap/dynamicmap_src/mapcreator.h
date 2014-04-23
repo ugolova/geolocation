@@ -31,8 +31,7 @@ private:
     QString pathStationB;
     QTableWidget *tableSearch;
 
-    void addStations(QTextStream& out);
-    void addLinks(QTextStream& out);
+    void addStations(QTextStream& out, bool withLinks);
     QString addShortestPath(QTextStream& out);
 
 public:
