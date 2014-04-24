@@ -120,15 +120,9 @@ namespace container {
                 tempArr = 0;
                 return true;
             }
-            else
-            {
-                false;
-            }
         }
-        else
-        {
-            return false;
-        }
+
+        return false;
 
     }
 
@@ -160,11 +154,8 @@ namespace container {
             matrix = tempMatrix;
             tempMatrix = 0;
         }
-        else
-        {
-            return false;
-        }
 
+        return false;
     }
 
     template<class T, class U>

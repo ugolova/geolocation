@@ -183,7 +183,7 @@
         </sizepolicy>
        </property>
        <attribute name="title">
-        <string>Станции</string>
+        <string>Редактор станций</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout_2">
         <item row="0" column="0">
@@ -341,7 +341,7 @@
       </widget>
       <widget class="QWidget" name="tab_links">
        <attribute name="title">
-        <string>Связи</string>
+        <string>Редактор путей</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout_8">
         <item row="0" column="0">

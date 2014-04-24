@@ -5,21 +5,18 @@
 #include <fstream>
 #include <string>
 #include <QDir>
-#include <container/serialization.h>
-#include <container/algorithm.h>
-#include "controller_gui.h"
 #include <QDebug>
 #include <QTableWidget>
+#include "container/serialization.h"
+#include "container/algorithm.h"
+#include "exceptions/unknown_station_exception.h"
+#include "controller_gui.h"
 
 using namespace std;
-
-enum MapMode { MAP_SEARCH, MAP_STATIONS, MAP_LINKS };
-enum MakeMode { MAKE_DEFAULT, MAKE_SHORTEST_PATH };
 
 class MapCreator
 {
 private:
-    MapMode mode;
     QString mapFilePath;
     std::string htmlTitle;
     std::string mapApiUrl;
@@ -27,24 +24,24 @@ private:
     double mapCenterLat;
     double mapCenterLon;
     MultiGraph<double, Station> *container;
-    QString pathStationA;
-    QString pathStationB;
     QTableWidget *tableSearch;
 
-    void addStations(ofstream& out, bool withLinks);
-    QString addShortestPath(ofstream& out);
-    std::string getStationColor(int stationType);
-    std::string getLineColor(int startStationType, int endStationType);
+    static std::string getStationColor(int stationType);
+    static std::string getLineColor(int startStationType, int endStationType);
+
+    void htmlHeader(ofstream& out);
+    void htmlFooter(ofstream& out);
 
 public:
-    MapCreator(MapMode mode);
+    MapCreator(QString mapFilePostfix);
+
     QString getMapFilePath();
-    QString makeHTML(MakeMode makeMode);
-    void setContainer(MultiGraph<double, Station> *container);
     MultiGraph<double, Station> *getContainer();
-    void setPathStationA(QString name);
-    void setPathStationB(QString name);
+    void setContainer(MultiGraph<double, Station> *container);
     void setTableSearch(QTableWidget *tableSearch);
+
+    void makeDefaultHTML(bool withLinks = true);
+    void makeRouteHTML(QString stationA, QString stationB) throw(UnknownStationException);
 };
 
 #endif // MAPCREATOR_H
