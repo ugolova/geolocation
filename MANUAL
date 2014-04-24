@@ -37,3 +37,10 @@ on the following platforms:
     ./build.sh
   7. Run dmap to run the program.
     ./dmap
+
+
+------------------- CREATING .DEB-PACKAGE
+
+  1. To make package it is required that the program builds successfully.
+  2. Run mkpackage.sh
+    ./mkpackage.sh
