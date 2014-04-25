@@ -44,7 +44,7 @@ on the following platforms:
 ---------- Windows
 
   1. NSIS must be installed (http://nsis.sourceforge.net/Download)
-  2. Run package.bat. After that directory "package" will be created.
+  2. Run package.bat (make sure that Qt-path in package.bat is correct). After that directory "package" will be created.
   3. Generate installer using NSIS.
     3.1. Right-click on "package.nsi" file
     3.2. Compile NSIS Script
