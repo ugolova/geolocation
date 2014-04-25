@@ -39,8 +39,26 @@ on the following platforms:
     ./dmap
 
 
-------------------- CREATING .DEB-PACKAGE
+------------------- CREATING INSTALLER
 
-  1. To make package it is required that the program builds successfully.
-  2. Run mkpackage.sh
-    ./mkpackage.sh
+---------- Linux
+
+  1. To make .dep-package it is required that the program builds successfully.
+  2. Run package.sh
+    ./package.sh
+
+
+------------------- INSTALLING & RUNNIING
+
+---------- Linux
+
+Created .deb-package is tested on Ubuntu 14.04 Trusty Tahr only!
+It will not install on Ubuntu 12.04 since the latter does not have all needed packages.
+
+  1. Install .deb-package (first command will output warnings):
+    dpkg -i dynamicmap-x.x.x-trusty.deb
+    sudo apt-get -f install
+  2. Run program
+    dynamicmap
+  3. Uninstall program
+    sudo apt-get remove dynamicmap
