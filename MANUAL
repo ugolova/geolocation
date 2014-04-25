@@ -41,6 +41,15 @@ on the following platforms:
 
 ------------------- CREATING INSTALLER
 
+---------- Windows
+
+  1. NSIS must be installed (http://nsis.sourceforge.net/Download)
+  2. Run package.bat. After that directory "package" will be created.
+  3. Generate installer using NSIS.
+    3.1. Right-click on "package.nsi" file
+    3.2. Compile NSIS Script
+  4. File "dynamicmap-installer.exe" is the installer (Captain Obvious).
+
 ---------- Linux
 
   1. To make .dep-package it is required that the program builds successfully.
@@ -49,6 +58,12 @@ on the following platforms:
 
 
 ------------------- INSTALLING & RUNNIING
+
+---------- Windows
+
+  1. Run dynamicmap-installer.exe.
+  2. Next, Next, Next...
+  3. Voila... Desktop icon appeared. Run it.
 
 ---------- Linux
 
