@@ -146,7 +146,7 @@ void MainWindow::importFile()
     for (int i = 0; i < stations->getSize(); i++)
     {
         int rowNum = ui->table_stations->rowCount();
-        QTableWidgetItem *newItem = new QTableWidgetItem(QString::fromStdString(stations->get(i)->getName()));
+        QTableWidgetItem *newItem = new QTableWidgetItem(stations->get(i)->getName());
         newItem->setFlags(newItem->flags() ^ Qt::ItemIsEditable);
         ui->table_stations->insertRow(rowNum);
         ui->table_stations->setItem(rowNum, 0, newItem);

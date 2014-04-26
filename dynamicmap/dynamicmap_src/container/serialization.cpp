@@ -62,7 +62,7 @@ MultiGraph<double, Station>* Serialization::readObject(const char* fileName)
                         convertLat >> laS;
 						std::stringstream bc(typeStr.c_str());
 						bc >> type;
-                        startStation = new Station(name, longS, laS,type);
+                        startStation = new Station(QString::fromStdString(name), longS, laS,type);
                     }
                     else
                     {
@@ -75,7 +75,7 @@ MultiGraph<double, Station>* Serialization::readObject(const char* fileName)
                         convertLat >> laS;
 						std::stringstream bc(typeStr.c_str());
 						bc >> type;
-                        endStation = new Station(name, longS, laS,type);
+                        endStation = new Station(QString::fromStdString(name), longS, laS,type);
                     }
                 }
                 else if (i == 2)
@@ -94,8 +94,8 @@ MultiGraph<double, Station>* Serialization::readObject(const char* fileName)
                 i++;
                 
             }
-
             graph->addPathToVertex(startStation, endStation, lenght);
+            graph->addPathToVertex(endStation, startStation, lenght);
         }
     }
 
@@ -121,8 +121,8 @@ void Serialization::writeObject(MultiGraph<double, Station> *graph ,const char* 
                 {
                     //std::cout << start->getName() << "[" << start->getLatitude() << ":" << start->getLongitude() << "]" << "-"
                     //    << end->getName() << "[" << end->getLatitude() << ":" << end->getLongitude() << "]" << "-[" << *lenghts->get(k) << "]" << std::endl;
-                    out << start->getName() << "[" << start->getLongitude() << ":" << start->getLatitude() << "]/" <<start->getType() << "-"
-                        << end->getName() << "[" << end->getLongitude() << ":" << end->getLatitude() << "]/" <<end->getType() << "-[" << *lenghts->get(k) << "]" << std::endl;
+                    out << start->getName().toStdString() << "[" << start->getLongitude() << ":" << start->getLatitude() << "]/" <<start->getType() << "-"
+                        << end->getName().toStdString() << "[" << end->getLongitude() << ":" << end->getLatitude() << "]/" <<end->getType() << "-[" << *lenghts->get(k) << "]" << std::endl;
                 }
             }
         }

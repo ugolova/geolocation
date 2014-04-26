@@ -10,7 +10,8 @@ Station* ControllerGUI::getStationByName(MultiGraph<double, Station>* graph, QSt
     for (int i = 0; i < stations->getSize(); i++)
     {
         Station *curStation = stations->get(i);
-        if (curStation->getName().compare(name.toStdString()) == 0)
+
+        if (QString::compare(name,curStation->getName(),Qt::CaseInsensitive) == 0)
         {
             return curStation;
         }
@@ -20,7 +21,7 @@ Station* ControllerGUI::getStationByName(MultiGraph<double, Station>* graph, QSt
 
 void ControllerGUI::addStation(MultiGraph<double, Station>* graph, QString name, int type, double lat, double lon)
 {
-    Station *st = new Station(name.toStdString(), lon, lat, type);
+    Station *st = new Station(name, lon, lat, type);
     graph->addVertex(st);
 }
 

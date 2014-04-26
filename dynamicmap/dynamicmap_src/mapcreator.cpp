@@ -43,8 +43,8 @@ void MapCreator::makeDefaultHTML(bool withLinks)
         for (int i = 0; i < arrSize; i++) {
             Station *st = arr->get(i);
             out << "p" << i << " = new ymaps.Placemark([" << st->getLatitude() << ", " << st->getLongitude() << "], {" << endl;
-            out << "    hintContent: '" << st->getName().c_str() << "'," << endl;
-            out << "    balloonContent: '" << st->getName().c_str() << "'," << endl;
+            out << "    hintContent: '" << st->getName().toStdString() << "'," << endl;
+            out << "    balloonContent: '" << st->getName().toStdString() << "'," << endl;
             out << "}, {" << endl;
             out << "    preset: '" << getStationColor(st->getType()) << "'" << endl;
             out << "});" << endl;
@@ -65,8 +65,8 @@ void MapCreator::makeDefaultHTML(bool withLinks)
                             out << "        ]" << endl;
                             out << "    }," << endl;
                             out << "    properties:{" << endl;
-                            out << "        hintContent: \"" << st->getName() << " - " << st2->getName() << "\"," << endl;
-                            out << "        balloonContent: \"" << st->getName() << " - " << st2->getName() << "\"" << endl;
+                            out << "        hintContent: \"" << st->getName().toStdString() << " - " << st2->getName().toStdString() << "\"," << endl;
+                            out << "        balloonContent: \"" << st->getName().toStdString() << " - " << st2->getName().toStdString() << "\"" << endl;
                             out << "    }" << endl;
                             out << "}, {" << endl;
                             out << "    draggable: false," << endl;
@@ -115,15 +115,15 @@ void MapCreator::makeRouteHTML(QString stationA, QString stationB) throw(Unknown
 
         // adding item to table
         int rowNum = tableSearch->rowCount();
-        QTableWidgetItem *newItem = new QTableWidgetItem(QString::fromStdString(stA->getName()));
+        QTableWidgetItem *newItem = new QTableWidgetItem(stA->getName());
         newItem->setFlags(newItem->flags() ^ Qt::ItemIsEditable);
         tableSearch->insertRow(rowNum);
         tableSearch->setItem(rowNum, 0, newItem);
 
         // stations
         out << "p" << i << " = new ymaps.Placemark([" << stA->getLatitude() << ", " << stA->getLongitude() << "], {" << endl;
-        out << "    hintContent: '" << stA->getName() << "'," << endl;
-        out << "    balloonContent: '" << stA->getName() << "'," << endl;
+        out << "    hintContent: '" << stA->getName().toStdString() << "'," << endl;
+        out << "    balloonContent: '" << stA->getName().toStdString() << "'," << endl;
         out << "}, {" << endl;
         out << "    preset: '" << getStationColor(stA->getType()) << "'" << endl;
         out << "});" << endl;
@@ -139,8 +139,8 @@ void MapCreator::makeRouteHTML(QString stationA, QString stationB) throw(Unknown
         out << "        ]" << endl;
         out << "    }," << endl;
         out << "    properties:{" << endl;
-        out << "        hintContent: \"" << stA->getName() << " - " << stB->getName() << "\"," << endl;
-        out << "        balloonContent: \"" << stA->getName() << " - " << stB->getName() << "\"" << endl;
+        out << "        hintContent: \"" << stA->getName().toStdString() << " - " << stB->getName().toStdString() << "\"," << endl;
+        out << "        balloonContent: \"" << stA->getName().toStdString() << " - " << stB->getName().toStdString() << "\"" << endl;
         out << "    }" << endl;
         out << "}, {" << endl;
         out << "    draggable: false," << endl;
@@ -154,8 +154,8 @@ void MapCreator::makeRouteHTML(QString stationA, QString stationB) throw(Unknown
         Road r = roads[roads.size() - 1];
         Station *lastStation = r.getEnd();
         out << "p" << roads.size() << " = new ymaps.Placemark([" << lastStation->getLatitude() << ", " << lastStation->getLongitude() << "], {" << endl;
-        out << "    hintContent: '" << lastStation->getName() << "'," << endl;
-        out << "    balloonContent: '" << lastStation->getName() << "'," << endl;
+        out << "    hintContent: '" << lastStation->getName().toStdString() << "'," << endl;
+        out << "    balloonContent: '" << lastStation->getName().toStdString() << "'," << endl;
         out << "}, {" << endl;
         out << "    preset: '" << getStationColor(lastStation->getType()) << "'" << endl;
         out << "});" << endl;
@@ -163,7 +163,7 @@ void MapCreator::makeRouteHTML(QString stationA, QString stationB) throw(Unknown
 
         // adding item to table
         int rowNum = tableSearch->rowCount();
-        QTableWidgetItem *newItem = new QTableWidgetItem(QString::fromStdString(lastStation->getName()));
+        QTableWidgetItem *newItem = new QTableWidgetItem(lastStation->getName());
         newItem->setFlags(newItem->flags() ^ Qt::ItemIsEditable);
         tableSearch->insertRow(rowNum);
         tableSearch->setItem(rowNum, 0, newItem);

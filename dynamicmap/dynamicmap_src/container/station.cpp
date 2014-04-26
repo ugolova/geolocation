@@ -7,7 +7,7 @@ Station::Station():
 {
 }
 
-Station::Station(std::string name, double longitude, double latitude, int type)
+Station::Station(QString name, double longitude, double latitude, int type)
 {
 	this->name = name; 
 	this->longitude = longitude;
@@ -15,7 +15,7 @@ Station::Station(std::string name, double longitude, double latitude, int type)
 	this->type = type;
 }
 
-void Station::setName(std::string name)
+void Station::setName(QString name)
 {
 	this->name = name;
 }
@@ -25,7 +25,7 @@ int Station::getType()
 	return type;
 }
 
-std::string Station::getName()
+QString Station::getName()
 {
 	return name;
 }

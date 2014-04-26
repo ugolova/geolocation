@@ -1,7 +1,7 @@
 #ifndef STATION_H
 #define STATION_H
 
-#include <string>
+#include <QString>
 
 class StationTest;
 
@@ -9,7 +9,7 @@ class Station
 {
     friend class StationTest;
 private:
-	std::string name;
+    QString name;
     double longitude;
     double latitude;
     int type;
@@ -17,7 +17,7 @@ private:
 public:
 	Station();
 
-	Station(std::string name, double longitude, double latitude ,int type);
+    Station(QString name, double longitude, double latitude ,int type);
 	void setLongitude(double longitude);
 	void setLatitude(double latitude);
 	double getLongitude() const;
@@ -25,8 +25,8 @@ public:
 	int getType();
 
 
-	void setName(std::string name);
-	std::string getName();
+    void setName(QString name);
+    QString getName();
 	bool operator == (const Station &obj);
 	~Station();
 };
