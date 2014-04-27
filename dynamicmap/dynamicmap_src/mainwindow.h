@@ -43,6 +43,9 @@ private slots:
     void deleteStation(int row);
     void deleteLink(int row);
     void on_checkBox_manualDistance_stateChanged();
+    void on_button_findStationToDel_clicked();
+
+    void on_button_findLinkToDel_clicked();
 
 private:
     const QString WINDOW_TITLE;
@@ -57,6 +60,7 @@ private:
     QSignalMapper *linksTableSignalMapper;
 
     void reloadAllBrowsers();
+    void clearTableData(QTableWidget *table);
 };
 
 #endif // MAINWINDOW_H

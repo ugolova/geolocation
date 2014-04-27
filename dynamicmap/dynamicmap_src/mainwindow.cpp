@@ -122,47 +122,6 @@ void MainWindow::importFile()
     delete container;
     container = newContainer;
 
-    DynamicArray<Station> *stations = container->getVertexs();
-    int arrSize = stations->getSize();
-    for (int i = 0; i < arrSize; i++)
-    {
-        Station *st1 = stations->get(i);
-
-        // filling stations table
-        int rowNum = ui->table_stations->rowCount();
-        QTableWidgetItem *newItem = new QTableWidgetItem(st1->getName());
-        newItem->setFlags(newItem->flags() ^ Qt::ItemIsEditable);
-        ui->table_stations->insertRow(rowNum);
-        ui->table_stations->setItem(rowNum, 0, newItem);
-
-        // filling links table
-        for (int j = 0; j < i; j++) {
-            Station *st2 = stations->get(j);
-            DynamicArray<double> *roads = container->getLenghtsByStation(st1, st2);
-
-            for (int k = 0; k < roads->getSize(); k++) {
-
-                int rowLinksNum = ui->table_links->rowCount();
-                QTableWidgetItem *newLinkItem1 = new QTableWidgetItem(st1->getName());
-                newItem->setFlags(newLinkItem1->flags() ^ Qt::ItemIsEditable);
-                QTableWidgetItem *newLinkItem2 = new QTableWidgetItem(st2->getName());
-                newItem->setFlags(newLinkItem2->flags() ^ Qt::ItemIsEditable);
-                QTableWidgetItem *newLinkItem3 = new QTableWidgetItem(ControllerGUI::distanceToString(*roads->get(k)));
-                newItem->setFlags(newLinkItem3->flags() ^ Qt::ItemIsEditable);
-                QTableWidgetItem *newLinkItem4 = new QTableWidgetItem(QString::number(*roads->get(k)));
-                newItem->setFlags(newLinkItem4->flags() ^ Qt::ItemIsEditable);
-
-                ui->table_links->insertRow(rowLinksNum);
-                ui->table_links->setItem(rowNum, 0, newLinkItem1);
-                ui->table_links->setItem(rowNum, 1, newLinkItem2);
-                ui->table_links->setItem(rowNum, 2, newLinkItem3);
-                ui->table_links->setItem(rowNum, 3, newLinkItem4);
-
-            }
-        }
-
-    }
-
     reloadAllBrowsers();
 }
 
@@ -181,9 +140,7 @@ void MainWindow::on_button_search_clicked()
 
         qDebug() << "Making route from " << ui->lineEdit_from->text() << " to " << ui->lineEdit_to->text();
 
-        while (ui->table_route->rowCount() > 0) {
-            ui->table_route->removeRow(0);
-        }
+        clearTableData(ui->table_route);
 
         MapCreator::getInstance()->makeRouteHTML(ui->lineEdit_from->text(), ui->lineEdit_to->text());
         ui->webView_search->load(QUrl(MapCreator::getInstance()->getRouteHtmlPath()));
@@ -219,13 +176,6 @@ void MainWindow::on_button_addStation_clicked()
                     ui->comboBox_stationType->currentIndex(),
                     lat,
                     lon);
-
-        // adding item to table
-        int rowNum = ui->table_stations->rowCount();
-        QTableWidgetItem *newItem = new QTableWidgetItem(ui->lineEdit_stationName->text());
-        newItem->setFlags(newItem->flags() ^ Qt::ItemIsEditable);
-        ui->table_stations->insertRow(rowNum);
-        ui->table_stations->setItem(rowNum, 0, newItem);
 
         // reset form
         ui->lineEdit_stationName->setText("");
@@ -264,22 +214,6 @@ void MainWindow::on_button_linkStations_clicked()
                     ui->lineEdit_stationA->text(),
                     ui->lineEdit_stationB->text(),
                     length);
-
-        // adding item to table
-        int rowNum = ui->table_links->rowCount();
-        QTableWidgetItem *newItem1 = new QTableWidgetItem(ui->lineEdit_stationA->text());
-        newItem1->setFlags(newItem1->flags() ^ Qt::ItemIsEditable);
-        QTableWidgetItem *newItem2 = new QTableWidgetItem(ui->lineEdit_stationB->text());
-        newItem2->setFlags(newItem2->flags() ^ Qt::ItemIsEditable);
-        QTableWidgetItem *newItem3 = new QTableWidgetItem(ControllerGUI::distanceToString(length));
-        newItem3->setFlags(newItem3->flags() ^ Qt::ItemIsEditable);
-        QTableWidgetItem *newItem4 = new QTableWidgetItem(QString::number(length));
-        newItem3->setFlags(newItem4->flags() ^ Qt::ItemIsEditable);
-        ui->table_links->insertRow(rowNum);
-        ui->table_links->setItem(rowNum, 0, newItem1);
-        ui->table_links->setItem(rowNum, 1, newItem2);
-        ui->table_links->setItem(rowNum, 2, newItem3);
-        ui->table_links->setItem(rowNum, 3, newItem4);
 
         // reset form
         ui->lineEdit_stationA->setText("");
@@ -356,4 +290,91 @@ void MainWindow::reloadAllBrowsers()
     ui->webView_search->load(QUrl(defaultHTML));
     ui->webView_stations->load(QUrl(defaultHTML));
     ui->webView_links->load(QUrl(defaultHTML));
+}
+
+void MainWindow::on_button_findStationToDel_clicked()
+{
+    try {
+        clearTableData(ui->table_stations);
+
+        Station *st = ControllerGUI::getStationByName(container, ui->lineEdit_delStationName->text(), false);
+        if (st == NULL) {
+            throw UnknownStationException(ui->lineEdit_delStationName->text());
+        }
+
+        // adding item to table
+        int rowNum = ui->table_stations->rowCount();
+        QTableWidgetItem *newItem = new QTableWidgetItem(st->getName());
+        newItem->setFlags(newItem->flags() ^ Qt::ItemIsEditable);
+        ui->table_stations->insertRow(rowNum);
+        ui->table_stations->setItem(rowNum, 0, newItem);
+
+        // reset form
+        ui->lineEdit_delStationName->setText("");
+
+    } catch (const DynamicMapException& e) {
+        qDebug() << e.getMsg();
+        QMessageBox msgBox;
+        msgBox.setText(e.getMsg());
+        msgBox.exec();
+    }
+}
+
+void MainWindow::on_button_findLinkToDel_clicked()
+{
+    try {
+        clearTableData(ui->table_links);
+
+        Station *stA = ControllerGUI::getStationByName(container, ui->lineEdit_delStationA->text(), false);
+        if (stA == NULL) {
+            throw UnknownStationException(ui->lineEdit_delStationA->text());
+        }
+
+        Station *stB = ControllerGUI::getStationByName(container, ui->lineEdit_delStationB->text(), false);
+        if (stB == NULL) {
+            throw UnknownStationException(ui->lineEdit_delStationB->text());
+        }
+
+        DynamicArray<double> *roads = container->getLenghtsByStation(stA, stB);
+        if (roads == 0 || roads->getSize() < 1) {
+            throw UnknownLinkException(ui->lineEdit_delStationA->text(), ui->lineEdit_delStationB->text(), 0);
+        }
+
+        for (int i = 0; i < roads->getSize(); i++) {
+
+            int rowLinksNum = ui->table_links->rowCount();
+            QTableWidgetItem *newLinkItem1 = new QTableWidgetItem(stA->getName());
+            newLinkItem1->setFlags(newLinkItem1->flags() ^ Qt::ItemIsEditable);
+            QTableWidgetItem *newLinkItem2 = new QTableWidgetItem(stB->getName());
+            newLinkItem2->setFlags(newLinkItem2->flags() ^ Qt::ItemIsEditable);
+            QTableWidgetItem *newLinkItem3 = new QTableWidgetItem(ControllerGUI::distanceToString(*roads->get(i)));
+            newLinkItem3->setFlags(newLinkItem3->flags() ^ Qt::ItemIsEditable);
+            QTableWidgetItem *newLinkItem4 = new QTableWidgetItem(QString::number(*roads->get(i)));
+            newLinkItem4->setFlags(newLinkItem4->flags() ^ Qt::ItemIsEditable);
+
+            ui->table_links->insertRow(rowLinksNum);
+            ui->table_links->setItem(rowLinksNum, 0, newLinkItem1);
+            ui->table_links->setItem(rowLinksNum, 1, newLinkItem2);
+            ui->table_links->setItem(rowLinksNum, 2, newLinkItem3);
+            ui->table_links->setItem(rowLinksNum, 3, newLinkItem4);
+
+        }
+
+        // reset form
+        ui->lineEdit_delStationA->setText("");
+        ui->lineEdit_delStationB->setText("");
+
+    } catch (const DynamicMapException& e) {
+        qDebug() << e.getMsg();
+        QMessageBox msgBox;
+        msgBox.setText(e.getMsg());
+        msgBox.exec();
+    }
+}
+
+void MainWindow::clearTableData(QTableWidget *table)
+{
+    while (table->rowCount() > 0) {
+        table->removeRow(0);
+    }
 }
