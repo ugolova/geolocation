@@ -1,19 +1,54 @@
 #include "mapcreator.h"
 
-MapCreator::MapCreator(QString mapFilePostfix):
+MapCreator* MapCreator::instance = NULL;
+
+MapCreator::MapCreator():
+    htmlTitle("DynamicMap"),
     mapApiUrl("http://api-maps.yandex.ru/2.0-stable/?load=package.full&lang=ru-RU"),
     jsMapVar("myMap"),
     mapCenterLat(59.938531),
     mapCenterLon(30.313497),
     container(NULL)
 {
-    mapFilePath = QDir::toNativeSeparators(QDir::tempPath()) + QDir::separator() + "dynamicmap_" + mapFilePostfix + ".html";
-    htmlTitle = "dynamic_map_" + mapFilePostfix.toStdString();
+    QString tmpDir = QDir::toNativeSeparators(QDir::tempPath()) + QDir::separator();
+    defaultHtmlPath = tmpDir + "dynamicmap_default.html";
+    routeHtmlPath = tmpDir + "dynamicmap_route.html";
+
+    qDebug() << "defaultHtmlPath: " << "file:///" + defaultHtmlPath;
+    qDebug() << "routeHtmlPath: " << "file:///" + routeHtmlPath;
 }
 
-QString MapCreator::getMapFilePath()
+MapCreator::~MapCreator()
 {
-    return mapFilePath;
+
+}
+
+MapCreator* MapCreator::getInstance()
+{
+    if (instance == NULL) {
+        instance = new MapCreator();
+    }
+    return instance;
+}
+
+bool MapCreator::deleteInstance()
+{
+    if (instance != NULL) {
+        delete instance;
+        instance = NULL;
+        return true;
+    }
+    return false;
+}
+
+QString MapCreator::getDefaultHtmlPath()
+{
+    return "file:///" + defaultHtmlPath;
+}
+
+QString MapCreator::getRouteHtmlPath()
+{
+    return "file:///" + routeHtmlPath;
 }
 
 MultiGraph<double, Station>* MapCreator::getContainer()
@@ -34,7 +69,7 @@ void MapCreator::setTableSearch(QTableWidget *table)
 void MapCreator::makeDefaultHTML(bool withLinks)
 {
     ofstream out;
-    out.open(mapFilePath.toStdString().c_str());
+    out.open(defaultHtmlPath.toStdString().c_str());
     htmlHeader(out);
 
     if (container != NULL) {
@@ -104,7 +139,7 @@ void MapCreator::makeRouteHTML(QString stationA, QString stationB) throw(Unknown
     tableSearch->setHorizontalHeaderItem(0, header);
 
     ofstream out;
-    out.open(mapFilePath.toStdString().c_str());
+    out.open(routeHtmlPath.toStdString().c_str());
     htmlHeader(out);
 
     for(std::vector<int>::size_type i = 0; i < roads.size(); i++) {

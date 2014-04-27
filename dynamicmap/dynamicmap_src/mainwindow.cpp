@@ -4,9 +4,7 @@
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     WINDOW_TITLE("Динамическая карта РЖД/Метро"),
-    ui(new Ui::MainWindow),
-    mapSearch(NULL),
-    mapEdit(NULL)
+    ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
     setWindowTitle(WINDOW_TITLE + " - " + Authentication::getCurrentUser());
@@ -22,12 +20,9 @@ MainWindow::MainWindow(QWidget *parent) :
     loginDialog = new LoginDialog();
     container = new MultiGraph<double, Station>();
 
-    mapSearch = new MapCreator("search");
-    mapSearch->setContainer(container);
-    mapSearch->makeDefaultHTML();
-    QString mapSearchPath = "file:///" + mapSearch->getMapFilePath();
-    qDebug() << "mapSearchPath: " << mapSearchPath;
-    ui->webView_search->load(QUrl(mapSearchPath));
+    MapCreator::getInstance()->setContainer(container);
+    MapCreator::getInstance()->makeDefaultHTML();
+    reloadAllBrowsers();
 
     connect(ui->login, SIGNAL(triggered()), this, SLOT(openLoginDialog()));
     connect(ui->logout, SIGNAL(triggered()), this, SLOT(logout()));
@@ -58,10 +53,10 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
+    MapCreator::deleteInstance();
+
     delete ui;
     delete loginDialog;
-    delete mapSearch;
-    delete mapEdit;
     delete container;
 
     // deleting stations table context menu
@@ -90,15 +85,6 @@ void MainWindow::openLoginDialog()
 
             setWindowTitle(WINDOW_TITLE + " - " + Authentication::getCurrentUser());
 
-            if (mapEdit == NULL) {
-                mapEdit = new MapCreator("edit");
-                mapEdit->setContainer(container);
-                mapEdit->makeDefaultHTML();
-                QString mapEditPath = "file:///" + mapEdit->getMapFilePath();
-                qDebug() << "mapStationsPath: " << mapEditPath;
-                ui->webView_stations->load(QUrl(mapEditPath));
-                ui->webView_links->load(QUrl(mapEditPath));
-            }
             qDebug() << "Logged in as " << Authentication::getCurrentUser();
         } else {
             qDebug() << "Incorrect login or password";
@@ -130,37 +116,54 @@ void MainWindow::importFile()
 
     MultiGraph<double, Station> *newContainer = Serialization::readObject(fileName.toStdString().c_str());
 
-    mapSearch->setContainer(newContainer);
-    if (mapEdit != NULL) {
-        mapEdit->setContainer(newContainer);
-    }
-
-    mapSearch->makeDefaultHTML();
-    if (mapEdit != NULL) {
-        mapEdit->makeDefaultHTML();
-    }
+    MapCreator::getInstance()->setContainer(newContainer);
+    MapCreator::getInstance()->makeDefaultHTML();
 
     delete container;
     container = newContainer;
 
-
     DynamicArray<Station> *stations = container->getVertexs();
-    for (int i = 0; i < stations->getSize(); i++)
+    int arrSize = stations->getSize();
+    for (int i = 0; i < arrSize; i++)
     {
+        Station *st1 = stations->get(i);
+
+        // filling stations table
         int rowNum = ui->table_stations->rowCount();
-        QTableWidgetItem *newItem = new QTableWidgetItem(stations->get(i)->getName());
+        QTableWidgetItem *newItem = new QTableWidgetItem(st1->getName());
         newItem->setFlags(newItem->flags() ^ Qt::ItemIsEditable);
         ui->table_stations->insertRow(rowNum);
         ui->table_stations->setItem(rowNum, 0, newItem);
-    }
-    /*QSortFilterProxyModel *sort_filter = new QSortFilterProxyModel(this);
-    sort_filter->setSourceModel(ui->table_stations->model());
-    sort_filter->sort(0);
-    ui->table_stations->setModel(sort_filter);*/
 
-    ui->webView_search->reload();
-    ui->webView_stations->reload();
-    ui->webView_links->reload();
+        // filling links table
+        for (int j = 0; j < i; j++) {
+            Station *st2 = stations->get(j);
+            DynamicArray<double> *roads = container->getLenghtsByStation(st1, st2);
+
+            for (int k = 0; k < roads->getSize(); k++) {
+
+                int rowLinksNum = ui->table_links->rowCount();
+                QTableWidgetItem *newLinkItem1 = new QTableWidgetItem(st1->getName());
+                newItem->setFlags(newLinkItem1->flags() ^ Qt::ItemIsEditable);
+                QTableWidgetItem *newLinkItem2 = new QTableWidgetItem(st2->getName());
+                newItem->setFlags(newLinkItem2->flags() ^ Qt::ItemIsEditable);
+                QTableWidgetItem *newLinkItem3 = new QTableWidgetItem(ControllerGUI::distanceToString(*roads->get(k)));
+                newItem->setFlags(newLinkItem3->flags() ^ Qt::ItemIsEditable);
+                QTableWidgetItem *newLinkItem4 = new QTableWidgetItem(QString::number(*roads->get(k)));
+                newItem->setFlags(newLinkItem4->flags() ^ Qt::ItemIsEditable);
+
+                ui->table_links->insertRow(rowLinksNum);
+                ui->table_links->setItem(rowNum, 0, newLinkItem1);
+                ui->table_links->setItem(rowNum, 1, newLinkItem2);
+                ui->table_links->setItem(rowNum, 2, newLinkItem3);
+                ui->table_links->setItem(rowNum, 3, newLinkItem4);
+
+            }
+        }
+
+    }
+
+    reloadAllBrowsers();
 }
 
 void MainWindow::exportFile()
@@ -174,7 +177,7 @@ void MainWindow::exportFile()
 void MainWindow::on_button_search_clicked()
 {
     try {
-        mapSearch->setTableSearch(ui->table_route);
+        MapCreator::getInstance()->setTableSearch(ui->table_route);
 
         qDebug() << "Making route from " << ui->lineEdit_from->text() << " to " << ui->lineEdit_to->text();
 
@@ -182,8 +185,8 @@ void MainWindow::on_button_search_clicked()
             ui->table_route->removeRow(0);
         }
 
-        mapSearch->makeRouteHTML(ui->lineEdit_from->text(), ui->lineEdit_to->text());
-        ui->webView_search->reload();
+        MapCreator::getInstance()->makeRouteHTML(ui->lineEdit_from->text(), ui->lineEdit_to->text());
+        ui->webView_search->load(QUrl(MapCreator::getInstance()->getRouteHtmlPath()));
 
     } catch (const DynamicMapException& e) {
         qDebug() << e.getMsg();
@@ -231,9 +234,8 @@ void MainWindow::on_button_addStation_clicked()
         ui->lineEdit_stationLongitude->setText("");
 
         // update maps
-        mapEdit->makeDefaultHTML();
-        ui->webView_stations->reload();
-        ui->webView_links->reload();
+        MapCreator::getInstance()->makeDefaultHTML();
+        reloadAllBrowsers();
 
     } catch (const DynamicMapException& e) {
         qDebug() << e.getMsg();
@@ -284,9 +286,8 @@ void MainWindow::on_button_linkStations_clicked()
         ui->lineEdit_stationB->setText("");
 
         // update maps
-        mapEdit->makeDefaultHTML();
-        ui->webView_stations->reload();
-        ui->webView_links->reload();
+        MapCreator::getInstance()->makeDefaultHTML();
+        reloadAllBrowsers();
 
     } catch (const DynamicMapException& e) {
         qDebug() << e.getMsg();
@@ -314,9 +315,9 @@ void MainWindow::deleteStation(int row)
                 container,
                 ui->table_stations->model()->index(row, 0).data().toString());
     ui->table_stations->removeRow(row);
-    mapEdit->makeDefaultHTML();
-    ui->webView_stations->reload();
-    ui->webView_links->reload();
+
+    MapCreator::getInstance()->makeDefaultHTML();
+    reloadAllBrowsers();
 }
 
 void MainWindow::deleteLink(int row)
@@ -328,9 +329,10 @@ void MainWindow::deleteLink(int row)
                     ui->table_links->model()->index(row, 1).data().toString(),
                     ui->table_links->model()->index(row, 3).data().toDouble());
         ui->table_links->removeRow(row);
-        mapEdit->makeDefaultHTML();
-        ui->webView_stations->reload();
-        ui->webView_links->reload();
+
+        MapCreator::getInstance()->makeDefaultHTML();
+        reloadAllBrowsers();
+
     } catch (const DynamicMapException& e) {
         qDebug() << e.getMsg();
         QMessageBox msgBox;
@@ -339,11 +341,19 @@ void MainWindow::deleteLink(int row)
     }
 }
 
-void MainWindow::on_checkBox_manualDistance_stateChanged(int arg1)
+void MainWindow::on_checkBox_manualDistance_stateChanged()
 {
     if (ui->checkBox_manualDistance->isChecked()) {
         ui->lineEdit_distance->setEnabled(true);
     } else {
         ui->lineEdit_distance->setEnabled(false);
     }
+}
+
+void MainWindow::reloadAllBrowsers()
+{
+    QString defaultHTML = MapCreator::getInstance()->getDefaultHtmlPath();
+    ui->webView_search->load(QUrl(defaultHTML));
+    ui->webView_stations->load(QUrl(defaultHTML));
+    ui->webView_links->load(QUrl(defaultHTML));
 }

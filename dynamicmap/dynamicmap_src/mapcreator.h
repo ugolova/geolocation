@@ -17,12 +17,21 @@ using namespace std;
 class MapCreator
 {
 private:
-    QString mapFilePath;
+    static MapCreator *instance;
+
+    MapCreator();
+    ~MapCreator();
+
+    QString defaultHtmlPath;
+    QString routeHtmlPath;
+
     std::string htmlTitle;
     std::string mapApiUrl;
     std::string jsMapVar;
+
     double mapCenterLat;
     double mapCenterLon;
+
     MultiGraph<double, Station> *container;
     QTableWidget *tableSearch;
 
@@ -33,11 +42,15 @@ private:
     void htmlFooter(ofstream& out);
 
 public:
-    MapCreator(QString mapFilePostfix);
+    static MapCreator *getInstance();
+    static bool deleteInstance();
 
-    QString getMapFilePath();
+    QString getDefaultHtmlPath();
+    QString getRouteHtmlPath();
+
     MultiGraph<double, Station> *getContainer();
     void setContainer(MultiGraph<double, Station> *container);
+
     void setTableSearch(QTableWidget *tableSearch);
 
     void makeDefaultHTML(bool withLinks = true);

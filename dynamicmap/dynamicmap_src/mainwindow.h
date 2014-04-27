@@ -42,15 +42,12 @@ private slots:
     void tableLinksMenuRequested(QPoint pos);
     void deleteStation(int row);
     void deleteLink(int row);
-
-    void on_checkBox_manualDistance_stateChanged(int arg1);
+    void on_checkBox_manualDistance_stateChanged();
 
 private:
     const QString WINDOW_TITLE;
     Ui::MainWindow *ui;
     LoginDialog *loginDialog;
-    MapCreator *mapSearch;
-    MapCreator *mapEdit;
     MultiGraph<double, Station> *container;
     QMenu *stationsContextMenu;
     QAction *deleteStationAction;
@@ -58,6 +55,8 @@ private:
     QMenu *linksContextMenu;
     QAction *deleteLinkAction;
     QSignalMapper *linksTableSignalMapper;
+
+    void reloadAllBrowsers();
 };
 
 #endif // MAINWINDOW_H
