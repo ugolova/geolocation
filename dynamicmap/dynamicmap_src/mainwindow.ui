@@ -356,6 +356,9 @@
            <layout class="QVBoxLayout" name="verticalLayout_4">
             <item>
              <layout class="QFormLayout" name="formLayout_3">
+              <property name="fieldGrowthPolicy">
+               <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+              </property>
               <item row="0" column="0">
                <widget class="QLabel" name="label_stationA">
                 <property name="text">
@@ -363,15 +366,15 @@
                 </property>
                </widget>
               </item>
+              <item row="0" column="1">
+               <widget class="QLineEdit" name="lineEdit_stationA"/>
+              </item>
               <item row="1" column="0">
                <widget class="QLabel" name="label_stationB">
                 <property name="text">
                  <string>Станция B</string>
                 </property>
                </widget>
-              </item>
-              <item row="0" column="1">
-               <widget class="QLineEdit" name="lineEdit_stationA"/>
               </item>
               <item row="1" column="1">
                <widget class="QLineEdit" name="lineEdit_stationB"/>
@@ -389,13 +392,17 @@
                 </property>
                </widget>
               </item>
-              <item row="2" column="1">
-               <widget class="QLineEdit" name="lineEdit_distance"/>
-              </item>
               <item row="2" column="0">
-               <widget class="QLabel" name="label_distance">
+               <widget class="QCheckBox" name="checkBox_manualDistance">
                 <property name="text">
                  <string>Расстояние</string>
+                </property>
+               </widget>
+              </item>
+              <item row="2" column="1">
+               <widget class="QLineEdit" name="lineEdit_distance">
+                <property name="enabled">
+                 <bool>false</bool>
                 </property>
                </widget>
               </item>
@@ -411,7 +418,7 @@
                 <rect>
                  <x>0</x>
                  <y>0</y>
-                 <width>158</width>
+                 <width>183</width>
                  <height>192</height>
                 </rect>
                </property>
@@ -448,7 +455,12 @@
                   </column>
                   <column>
                    <property name="text">
-                    <string>Расстояние</string>
+                    <string>Расстояние (км)</string>
+                   </property>
+                  </column>
+                  <column>
+                   <property name="text">
+                    <string>distance</string>
                    </property>
                   </column>
                  </widget>

@@ -17,6 +17,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->logout->setVisible(false);
 
+    ui->table_links->setColumnHidden(3, true);
+
     loginDialog = new LoginDialog();
     container = new MultiGraph<double, Station>();
 
@@ -244,19 +246,22 @@ void MainWindow::on_button_addStation_clicked()
 void MainWindow::on_button_linkStations_clicked()
 {
     try {
-        bool conversionSuccess;
+        double length = -1;
+        if (ui->checkBox_manualDistance->isChecked()) {
 
-        QString distanceString = ui->lineEdit_distance->text();
-        double distance = distanceString.toDouble(&conversionSuccess);
-        if (!conversionSuccess) {
-            throw InvalidDistanceException(distanceString);
+            bool conversionSuccess;
+
+            length = ui->lineEdit_distance->text().toDouble(&conversionSuccess);
+            if (!conversionSuccess) {
+                throw InvalidDistanceException(ui->lineEdit_distance->text());
+            }
         }
 
-        ControllerGUI::addLink(
+        length = ControllerGUI::addLink(
                     container,
                     ui->lineEdit_stationA->text(),
                     ui->lineEdit_stationB->text(),
-                    distance);
+                    length);
 
         // adding item to table
         int rowNum = ui->table_links->rowCount();
@@ -264,17 +269,19 @@ void MainWindow::on_button_linkStations_clicked()
         newItem1->setFlags(newItem1->flags() ^ Qt::ItemIsEditable);
         QTableWidgetItem *newItem2 = new QTableWidgetItem(ui->lineEdit_stationB->text());
         newItem2->setFlags(newItem2->flags() ^ Qt::ItemIsEditable);
-        QTableWidgetItem *newItem3 = new QTableWidgetItem(distanceString);
+        QTableWidgetItem *newItem3 = new QTableWidgetItem(ControllerGUI::distanceToString(length));
         newItem3->setFlags(newItem3->flags() ^ Qt::ItemIsEditable);
+        QTableWidgetItem *newItem4 = new QTableWidgetItem(QString::number(length));
+        newItem3->setFlags(newItem4->flags() ^ Qt::ItemIsEditable);
         ui->table_links->insertRow(rowNum);
         ui->table_links->setItem(rowNum, 0, newItem1);
         ui->table_links->setItem(rowNum, 1, newItem2);
         ui->table_links->setItem(rowNum, 2, newItem3);
+        ui->table_links->setItem(rowNum, 3, newItem4);
 
         // reset form
         ui->lineEdit_stationA->setText("");
         ui->lineEdit_stationB->setText("");
-        ui->lineEdit_distance->setText("");
 
         // update maps
         mapEdit->makeDefaultHTML();
@@ -314,13 +321,29 @@ void MainWindow::deleteStation(int row)
 
 void MainWindow::deleteLink(int row)
 {
-    ControllerGUI::delLink(
-                container,
-                ui->table_links->model()->index(row, 0).data().toString(),
-                ui->table_links->model()->index(row, 1).data().toString(),
-                ui->table_links->model()->index(row, 2).data().toDouble());
-    ui->table_links->removeRow(row);
-    mapEdit->makeDefaultHTML();
-    ui->webView_stations->reload();
-    ui->webView_links->reload();
+    try {
+        ControllerGUI::delLink(
+                    container,
+                    ui->table_links->model()->index(row, 0).data().toString(),
+                    ui->table_links->model()->index(row, 1).data().toString(),
+                    ui->table_links->model()->index(row, 3).data().toDouble());
+        ui->table_links->removeRow(row);
+        mapEdit->makeDefaultHTML();
+        ui->webView_stations->reload();
+        ui->webView_links->reload();
+    } catch (const DynamicMapException& e) {
+        qDebug() << e.getMsg();
+        QMessageBox msgBox;
+        msgBox.setText(e.getMsg());
+        msgBox.exec();
+    }
+}
+
+void MainWindow::on_checkBox_manualDistance_stateChanged(int arg1)
+{
+    if (ui->checkBox_manualDistance->isChecked()) {
+        ui->lineEdit_distance->setEnabled(true);
+    } else {
+        ui->lineEdit_distance->setEnabled(false);
+    }
 }

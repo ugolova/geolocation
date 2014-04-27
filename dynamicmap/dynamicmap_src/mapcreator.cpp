@@ -87,12 +87,12 @@ void MapCreator::makeDefaultHTML(bool withLinks)
 
 void MapCreator::makeRouteHTML(QString stationA, QString stationB) throw(UnknownStationException)
 {
-    Station *stA = ControllerGUI::getStationByName(container, stationA);
+    Station *stA = ControllerGUI::getStationByName(container, stationA, false);
     if (stA == NULL) {
         throw UnknownStationException(stationA);
     }
 
-    Station *stB = ControllerGUI::getStationByName(container, stationB);
+    Station *stB = ControllerGUI::getStationByName(container, stationB, false);
     if (stB == NULL) {
         throw UnknownStationException(stationB);
     }
@@ -100,7 +100,7 @@ void MapCreator::makeRouteHTML(QString stationA, QString stationB) throw(Unknown
     double length = 0;
     std::vector<Road> roads = Algorithm::findShortestPath(container, stA, stB, length);
 
-    QTableWidgetItem* header = new QTableWidgetItem(tableSearch->horizontalHeaderItem(0)->text() + " (расстояние: " + QString::number(length) + ")");
+    QTableWidgetItem* header = new QTableWidgetItem("Маршрут (расстояние: " + ControllerGUI::distanceToString(length) + " км)");
     tableSearch->setHorizontalHeaderItem(0, header);
 
     ofstream out;

@@ -24,6 +24,7 @@ SOURCES += main.cpp\
     controller_gui.cpp \
     exceptions/unknown_station_exception.cpp \
     exceptions/invalid_coordinate_exception.cpp \
+    exceptions/unknown_link_exception.cpp \
     exceptions/invalid_distance_exception.cpp
 
 HEADERS  += mainwindow.h \
@@ -38,9 +39,10 @@ HEADERS  += mainwindow.h \
     container/dynamic_array.h \
     controller_gui.h \
     exceptions/unknown_station_exception.h \
+    exceptions/dynamicmap_exception.h \
     exceptions/invalid_coordinate_exception.h \
-    exceptions/invalid_distance_exception.h \
-    exceptions/dynamicmap_exception.h
+    exceptions/unknown_link_exception.h \
+    exceptions/invalid_distance_exception.h
 
 FORMS    += mainwindow.ui \
     logindialog.ui

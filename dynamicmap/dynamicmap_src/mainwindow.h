@@ -13,6 +13,7 @@
 #include "authentication.h"
 #include "controller_gui.h"
 #include "exceptions/invalid_coordinate_exception.h"
+#include "exceptions/unknown_link_exception.h"
 #include "exceptions/invalid_distance_exception.h"
 
 namespace Ui {
@@ -41,6 +42,8 @@ private slots:
     void tableLinksMenuRequested(QPoint pos);
     void deleteStation(int row);
     void deleteLink(int row);
+
+    void on_checkBox_manualDistance_stateChanged(int arg1);
 
 private:
     const QString WINDOW_TITLE;

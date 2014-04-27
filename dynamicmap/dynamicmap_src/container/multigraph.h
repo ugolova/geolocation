@@ -115,7 +115,7 @@ namespace container {
         {
             DynamicArray<T> * tempArr = &matrix[j*capacity + i];
 
-            if (tempArr->removeElem(tempArr->getIndex(lenght)) != -1)
+            if (tempArr->removeElem(tempArr->getIndex(lenght)) != 0)
             {
                 tempArr = 0;
                 return true;
