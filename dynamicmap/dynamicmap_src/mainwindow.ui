@@ -197,9 +197,32 @@
           <item>
            <layout class="QVBoxLayout" name="verticalLayout_3">
             <item>
+             <widget class="QLabel" name="label_2">
+              <property name="font">
+               <font>
+                <weight>50</weight>
+                <italic>true</italic>
+                <bold>false</bold>
+               </font>
+              </property>
+              <property name="layoutDirection">
+               <enum>Qt::LeftToRight</enum>
+              </property>
+              <property name="text">
+               <string>Добавление станций</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item>
              <layout class="QFormLayout" name="formLayout_2">
               <property name="fieldGrowthPolicy">
                <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+              </property>
+              <property name="formAlignment">
+               <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
               </property>
               <item row="0" column="0">
                <widget class="QLabel" name="label_stationName">
@@ -212,47 +235,6 @@
                <widget class="QLineEdit" name="lineEdit_stationName">
                 <property name="text">
                  <string/>
-                </property>
-               </widget>
-              </item>
-              <item row="2" column="0">
-               <widget class="QLabel" name="label_stationLatitude">
-                <property name="text">
-                 <string>Широта</string>
-                </property>
-               </widget>
-              </item>
-              <item row="3" column="0">
-               <widget class="QLabel" name="label_stationLongitude">
-                <property name="text">
-                 <string>Долгота</string>
-                </property>
-               </widget>
-              </item>
-              <item row="2" column="1">
-               <widget class="QLineEdit" name="lineEdit_stationLatitude">
-                <property name="text">
-                 <string/>
-                </property>
-               </widget>
-              </item>
-              <item row="3" column="1">
-               <widget class="QLineEdit" name="lineEdit_stationLongitude">
-                <property name="text">
-                 <string/>
-                </property>
-               </widget>
-              </item>
-              <item row="4" column="1">
-               <widget class="QPushButton" name="button_addStation">
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
-                </property>
-                <property name="text">
-                 <string>Добавить</string>
                 </property>
                </widget>
               </item>
@@ -282,6 +264,103 @@
                 </item>
                </widget>
               </item>
+              <item row="2" column="0">
+               <widget class="QLabel" name="label_stationLatitude">
+                <property name="text">
+                 <string>Широта</string>
+                </property>
+               </widget>
+              </item>
+              <item row="2" column="1">
+               <widget class="QLineEdit" name="lineEdit_stationLatitude">
+                <property name="text">
+                 <string/>
+                </property>
+               </widget>
+              </item>
+              <item row="3" column="0">
+               <widget class="QLabel" name="label_stationLongitude">
+                <property name="text">
+                 <string>Долгота</string>
+                </property>
+               </widget>
+              </item>
+              <item row="3" column="1">
+               <widget class="QLineEdit" name="lineEdit_stationLongitude">
+                <property name="text">
+                 <string/>
+                </property>
+               </widget>
+              </item>
+              <item row="4" column="1">
+               <widget class="QPushButton" name="button_addStation">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="layoutDirection">
+                 <enum>Qt::LeftToRight</enum>
+                </property>
+                <property name="text">
+                 <string>Добавить</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <widget class="Line" name="line">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="label_3">
+              <property name="font">
+               <font>
+                <italic>true</italic>
+                <underline>false</underline>
+               </font>
+              </property>
+              <property name="text">
+               <string>Удаление станций</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <layout class="QFormLayout" name="formLayout_16">
+              <property name="fieldGrowthPolicy">
+               <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+              </property>
+              <item row="0" column="1">
+               <widget class="QLineEdit" name="lineEdit"/>
+              </item>
+              <item row="1" column="1">
+               <widget class="QPushButton" name="pushButton">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="text">
+                 <string>Найти</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="0">
+               <widget class="QLabel" name="label">
+                <property name="text">
+                 <string>Название</string>
+                </property>
+               </widget>
+              </item>
              </layout>
             </item>
             <item>
@@ -295,7 +374,7 @@
                  <x>0</x>
                  <y>0</y>
                  <width>215</width>
-                 <height>192</height>
+                 <height>131</height>
                 </rect>
                </property>
                <layout class="QGridLayout" name="gridLayout_7">
@@ -311,7 +390,7 @@
                 <property name="bottomMargin">
                  <number>0</number>
                 </property>
-                <item row="0" column="0">
+                <item row="1" column="0">
                  <widget class="QTableWidget" name="table_stations">
                   <property name="rowCount">
                    <number>0</number>
@@ -324,7 +403,7 @@
                   </attribute>
                   <column>
                    <property name="text">
-                    <string>Станция</string>
+                    <string>Станции</string>
                    </property>
                   </column>
                  </widget>
@@ -355,6 +434,21 @@
           <item>
            <layout class="QVBoxLayout" name="verticalLayout_4">
             <item>
+             <widget class="QLabel" name="label_4">
+              <property name="font">
+               <font>
+                <italic>true</italic>
+               </font>
+              </property>
+              <property name="text">
+               <string>Добавление связей</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item>
              <layout class="QFormLayout" name="formLayout_3">
               <property name="fieldGrowthPolicy">
                <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
@@ -379,6 +473,20 @@
               <item row="1" column="1">
                <widget class="QLineEdit" name="lineEdit_stationB"/>
               </item>
+              <item row="2" column="0">
+               <widget class="QCheckBox" name="checkBox_manualDistance">
+                <property name="text">
+                 <string>Расстояние</string>
+                </property>
+               </widget>
+              </item>
+              <item row="2" column="1">
+               <widget class="QLineEdit" name="lineEdit_distance">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
+               </widget>
+              </item>
               <item row="3" column="1">
                <widget class="QPushButton" name="button_linkStations">
                 <property name="sizePolicy">
@@ -392,17 +500,65 @@
                 </property>
                </widget>
               </item>
-              <item row="2" column="0">
-               <widget class="QCheckBox" name="checkBox_manualDistance">
+             </layout>
+            </item>
+            <item>
+             <widget class="Line" name="line_2">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="label_7">
+              <property name="font">
+               <font>
+                <italic>true</italic>
+               </font>
+              </property>
+              <property name="text">
+               <string>Удаление связей</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <layout class="QFormLayout" name="formLayout_17">
+              <property name="fieldGrowthPolicy">
+               <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+              </property>
+              <item row="0" column="0">
+               <widget class="QLabel" name="label_5">
                 <property name="text">
-                 <string>Расстояние</string>
+                 <string>Станция A</string>
                 </property>
                </widget>
               </item>
+              <item row="0" column="1">
+               <widget class="QLineEdit" name="lineEdit_2"/>
+              </item>
+              <item row="1" column="0">
+               <widget class="QLabel" name="label_6">
+                <property name="text">
+                 <string>Станция B</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="1">
+               <widget class="QLineEdit" name="lineEdit_3"/>
+              </item>
               <item row="2" column="1">
-               <widget class="QLineEdit" name="lineEdit_distance">
-                <property name="enabled">
-                 <bool>false</bool>
+               <widget class="QPushButton" name="pushButton_2">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="text">
+                 <string>Найти</string>
                 </property>
                </widget>
               </item>
@@ -419,7 +575,7 @@
                  <x>0</x>
                  <y>0</y>
                  <width>183</width>
-                 <height>192</height>
+                 <height>131</height>
                 </rect>
                </property>
                <layout class="QGridLayout" name="gridLayout_9">
