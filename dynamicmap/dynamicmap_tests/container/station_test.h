@@ -2,7 +2,7 @@
 #define STATION_TEST_H
 
 #include <QtTest>
-#include <string>
+#include <QString>
 
 #include "../../dynamicmap_src/container/station.h"
 

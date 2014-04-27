@@ -7,7 +7,7 @@ StationTest::StationTest(QObject *parent) :
 
 void StationTest::testGetName()
 {
-    std::string testName = "testName";
+    QString testName = "testName";
     Station st;
     st.name = testName;
     QCOMPARE(st.getName(), testName);
@@ -15,7 +15,7 @@ void StationTest::testGetName()
 
 void StationTest::testSetName()
 {
-    std::string testName = "testName";
+    QString testName = "testName";
     Station st;
     st.setName(testName);
     QCOMPARE(st.name, testName);
