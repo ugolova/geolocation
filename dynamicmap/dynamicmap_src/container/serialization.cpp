@@ -1,111 +1,71 @@
 #include "serialization.h"
 
-Serialization::Serialization()
+MultiGraph<double, Station>* Serialization::readObject(QString fileName) throw(DynamicMapException)
 {
-}
+    QFile file(fileName);
+    bool opened = file.open(QIODevice::ReadOnly | QIODevice::Text);
+    if (!opened) {
+        throw CannotOpenFileException(fileName);
+    }
+    QTextStream in(&file);
 
-//TODO serialize and deserialize type of station
+    // regexp patterns
+    QString pDouble = "[\\d]+\\.[\\d]+"; // TODO: allow integers
+    QString pStation = "[^\\[]+"; // TODO: make good regexp
+    QString pLon = pDouble;
+    QString pLat = pDouble;
+    QString pType = "[\\d]{1}";
+    QString pDistance = pDouble;
+    QString pStationData = "(" + pStation + ")\\[(" + pLon + "):(" + pLat + ")\\]/(" + pType + ")";
 
-MultiGraph<double, Station>* Serialization::readObject(const char* fileName)
-{
-    std::ifstream in(fileName);
+    // result regexp
+    QRegExp regexp("^" + pStationData + "-" + pStationData + "-\\[(" + pDistance + ")\\]" + "$");
 
     MultiGraph<double, Station>* graph = new MultiGraph<double, Station>();
 
-    if (in.is_open())
+    int lineCounter = 1;
+    QString str = NULL;
+    while ((str = in.readLine()) != NULL)
     {
-        std::string str;
-        while (std::getline(in,str))
-        {
-            std::string temp;
-            std::stringstream ss(str);
-            char delim = '-';
+        int pos = regexp.indexIn(str);
 
-            Station *startStation = 0;
-            Station *endStation = 0;
-            double *lenght = 0;
-            int i = 0;
-            while (std::getline(ss, temp, delim))
-            {
-
-                if (i == 0 || i == 1){
-                    std::stringstream ssName(temp);
-                    std::string name;
-
-
-                    char leftDelim = '[';
-                    char seperator = ':';
-                    std::getline(ssName, name, leftDelim);
-
-                    ssName.str(temp);
-                    std::string latitude ,longitude,typeStr;
-                    std::getline(ssName, latitude, seperator);
-                    int len = temp.length() - latitude.length() - 3;
-                    longitude = temp.substr(latitude.length() + 1 ,len);
-                    latitude = latitude.substr(name.length() + 1);
-                    std::string swapTmp = longitude;
-                    longitude = latitude;
-                    latitude = swapTmp;
-					int tempPos = temp.find("/");
-					typeStr = temp.substr(tempPos + 1);
-
-                    //std::cout << latitude << "\n";
-                    //std::cout << longitude << "\n";
-                    if (i == 0)
-                    {
-                        double longS = 0;
-                        double laS = 0;
-						int type = 0;
-                        std::stringstream convertLon(longitude.c_str());
-                        convertLon >> longS;
-                        std::stringstream convertLat(latitude.c_str());
-                        convertLat >> laS;
-						std::stringstream bc(typeStr.c_str());
-						bc >> type;
-                        startStation = new Station(QString::fromStdString(name), longS, laS,type);
-                    }
-                    else
-                    {
-                        double longS = 0;
-                        double laS = 0;
-						int type = 0;
-                        std::stringstream convertLon(longitude.c_str());
-                        convertLon >> longS;
-                        std::stringstream convertLat(latitude.c_str());
-                        convertLat >> laS;
-						std::stringstream bc(typeStr.c_str());
-						bc >> type;
-                        endStation = new Station(QString::fromStdString(name), longS, laS,type);
-                    }
-                }
-                else if (i == 2)
-                {
-                    temp = temp.substr(1, temp.length() - 2);
-                    double tmpLen = 0;
-                    std::stringstream convertLength(temp.c_str());
-                    convertLength >> tmpLen;
-                    lenght = new double(tmpLen);
-                    //std::cout << *lenght << "\n";
-                }
-				else if (i == 3)
-				{
-					
-				}
-                i++;
-                
-            }
-            graph->addPathToVertex(startStation, endStation, lenght);
-            graph->addPathToVertex(endStation, startStation, lenght);
+        if (pos == -1) {
+            throw IncorrectFileFormatException(QString::number(lineCounter));
         }
+
+        QString startStationName = regexp.cap(1).trimmed();
+        double startStationLon = regexp.cap(2).toDouble();
+        double startStationLat = regexp.cap(3).toDouble();
+        int startStationType = regexp.cap(4).toInt();
+
+        QString endStationName = regexp.cap(5).trimmed();
+        double endStationLon = regexp.cap(6).toDouble();
+        double endStationLat = regexp.cap(7).toDouble();
+        int endStationType = regexp.cap(8).toInt();
+
+        double *distance = new double(regexp.cap(9).toDouble());
+
+        Station *startStation = new Station(startStationName, startStationLon, startStationLat, startStationType);
+        Station *endStation = new Station(endStationName, endStationLon, endStationLat, endStationType);
+
+        graph->addPathToVertex(startStation, endStation, distance);
+        graph->addPathToVertex(endStation, startStation, distance);
+
+        lineCounter++;
     }
 
-    in.close();
+    file.close();
     return graph;
 }
 
-void Serialization::writeObject(MultiGraph<double, Station> *graph ,const char* fileName)
+void Serialization::writeObject(MultiGraph<double, Station> *graph, QString fileName) throw(CannotOpenFileException)
 {
-    std::ofstream out(fileName);
+    QFile file(fileName);
+    bool opened = file.open(QIODevice::WriteOnly | QIODevice::Text);
+    if (!opened) {
+        throw CannotOpenFileException(fileName);
+    }
+    QTextStream out(&file);
 
     DynamicArray<Station> * vertexs = graph->getVertexs();
     for (int i = 0; i < vertexs->getSize(); i++)
@@ -119,13 +79,11 @@ void Serialization::writeObject(MultiGraph<double, Station> *graph ,const char* 
             {
                 for (int k = 0; k < lenghts->getSize(); k++)
                 {
-                    //std::cout << start->getName() << "[" << start->getLatitude() << ":" << start->getLongitude() << "]" << "-"
-                    //    << end->getName() << "[" << end->getLatitude() << ":" << end->getLongitude() << "]" << "-[" << *lenghts->get(k) << "]" << std::endl;
-                    out << start->getName().toStdString() << "[" << start->getLongitude() << ":" << start->getLatitude() << "]/" <<start->getType() << "-"
-                        << end->getName().toStdString() << "[" << end->getLongitude() << ":" << end->getLatitude() << "]/" <<end->getType() << "-[" << *lenghts->get(k) << "]" << std::endl;
+                    out << start->getName() << "[" << start->getLongitude() << ":" << start->getLatitude() << "]/" << start->getType() << "-"
+                        << end->getName() << "[" << end->getLongitude() << ":" << end->getLatitude() << "]/" <<end->getType() << "-[" << *lenghts->get(k) << "]" << endl;
                 }
             }
         }
     }
-    out.close();
+    file.close();
 }

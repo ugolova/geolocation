@@ -25,9 +25,9 @@ private:
     QString defaultHtmlPath;
     QString routeHtmlPath;
 
-    std::string htmlTitle;
-    std::string mapApiUrl;
-    std::string jsMapVar;
+    QString htmlTitle;
+    QString mapApiUrl;
+    QString jsMapVar;
 
     double mapCenterLat;
     double mapCenterLon;
@@ -35,11 +35,11 @@ private:
     MultiGraph<double, Station> *container;
     QTableWidget *tableSearch;
 
-    static std::string getStationColor(int stationType);
-    static std::string getLineColor(int startStationType, int endStationType);
+    static QString getStationColor(int stationType);
+    static QString getLineColor(int startStationType, int endStationType);
 
-    void htmlHeader(ofstream& out);
-    void htmlFooter(ofstream& out);
+    void htmlHeader(QTextStream& out);
+    void htmlFooter(QTextStream& out);
 
 public:
     static MapCreator *getInstance();

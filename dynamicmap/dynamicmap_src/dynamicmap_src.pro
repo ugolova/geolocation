@@ -25,7 +25,9 @@ SOURCES += main.cpp\
     exceptions/unknown_station_exception.cpp \
     exceptions/invalid_coordinate_exception.cpp \
     exceptions/unknown_link_exception.cpp \
-    exceptions/invalid_distance_exception.cpp
+    exceptions/invalid_distance_exception.cpp \
+    exceptions/cannot_open_file_exception.cpp \
+    exceptions/incorrect_file_format_exception.cpp
 
 HEADERS  += mainwindow.h \
     logindialog.h \
@@ -42,7 +44,9 @@ HEADERS  += mainwindow.h \
     exceptions/dynamicmap_exception.h \
     exceptions/invalid_coordinate_exception.h \
     exceptions/unknown_link_exception.h \
-    exceptions/invalid_distance_exception.h
+    exceptions/invalid_distance_exception.h \
+    exceptions/cannot_open_file_exception.h \
+    exceptions/incorrect_file_format_exception.h
 
 FORMS    += mainwindow.ui \
     logindialog.ui

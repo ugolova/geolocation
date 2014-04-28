@@ -68,8 +68,10 @@ void MapCreator::setTableSearch(QTableWidget *table)
 
 void MapCreator::makeDefaultHTML(bool withLinks)
 {
-    ofstream out;
-    out.open(defaultHtmlPath.toStdString().c_str());
+    QFile file(defaultHtmlPath);
+    file.open(QIODevice::WriteOnly | QIODevice::Text);
+    QTextStream out(&file);
+
     htmlHeader(out);
 
     if (container != NULL) {
@@ -98,9 +100,9 @@ void MapCreator::makeDefaultHTML(bool withLinks)
                 break;
             }
             out << "push(new ymaps.Placemark([" << st->getLatitude() << ", " << st->getLongitude() << "], {" << endl;
-            out << "    hintContent: '" << st->getName().toStdString() << "'," << endl;
-            out << "    balloonContent: '" << st->getName().toStdString() << "'," << endl;
-            out << "    clusterCaption: '" << st->getName().toStdString() << "'," << endl;
+            out << "    hintContent: '" << st->getName() << "'," << endl;
+            out << "    balloonContent: '" << st->getName() << "'," << endl;
+            out << "    clusterCaption: '" << st->getName() << "'," << endl;
             out << "}, {" << endl;
             out << "    preset: '" << getStationColor(st->getType()) << "'" << endl;
             out << "}));" << endl;
@@ -120,8 +122,8 @@ void MapCreator::makeDefaultHTML(bool withLinks)
                             out << "        ]" << endl;
                             out << "    }," << endl;
                             out << "    properties:{" << endl;
-                            out << "        hintContent: \"" << st->getName().toStdString() << " - " << st2->getName().toStdString() << "\"," << endl;
-                            out << "        balloonContent: \"" << st->getName().toStdString() << " - " << st2->getName().toStdString() << "\"" << endl;
+                            out << "        hintContent: \"" << st->getName() << " - " << st2->getName() << "\"," << endl;
+                            out << "        balloonContent: \"" << st->getName() << " - " << st2->getName() << "\"" << endl;
                             out << "    }" << endl;
                             out << "}, {" << endl;
                             out << "    draggable: false," << endl;
@@ -144,7 +146,7 @@ void MapCreator::makeDefaultHTML(bool withLinks)
     }
 
     htmlFooter(out);
-    out.close();
+    file.close();
 }
 
 void MapCreator::makeRouteHTML(QString stationA, QString stationB) throw(UnknownStationException)
@@ -165,8 +167,10 @@ void MapCreator::makeRouteHTML(QString stationA, QString stationB) throw(Unknown
     QTableWidgetItem* header = new QTableWidgetItem("Маршрут (расстояние: " + ControllerGUI::distanceToString(length) + " км)");
     tableSearch->setHorizontalHeaderItem(0, header);
 
-    ofstream out;
-    out.open(routeHtmlPath.toStdString().c_str());
+    QFile file(routeHtmlPath);
+    file.open(QIODevice::WriteOnly | QIODevice::Text);
+    QTextStream out(&file);
+
     htmlHeader(out);
 
     for(std::vector<int>::size_type i = 0; i < roads.size(); i++) {
@@ -184,8 +188,8 @@ void MapCreator::makeRouteHTML(QString stationA, QString stationB) throw(Unknown
 
         // stations
         out << "p" << i << " = new ymaps.Placemark([" << stA->getLatitude() << ", " << stA->getLongitude() << "], {" << endl;
-        out << "    hintContent: '" << stA->getName().toStdString() << "'," << endl;
-        out << "    balloonContent: '" << stA->getName().toStdString() << "'," << endl;
+        out << "    hintContent: '" << stA->getName() << "'," << endl;
+        out << "    balloonContent: '" << stA->getName() << "'," << endl;
         out << "}, {" << endl;
         out << "    preset: '" << getStationColor(stA->getType()) << "'" << endl;
         out << "});" << endl;
@@ -201,8 +205,8 @@ void MapCreator::makeRouteHTML(QString stationA, QString stationB) throw(Unknown
         out << "        ]" << endl;
         out << "    }," << endl;
         out << "    properties:{" << endl;
-        out << "        hintContent: \"" << stA->getName().toStdString() << " - " << stB->getName().toStdString() << "\"," << endl;
-        out << "        balloonContent: \"" << stA->getName().toStdString() << " - " << stB->getName().toStdString() << "\"" << endl;
+        out << "        hintContent: \"" << stA->getName() << " - " << stB->getName() << "\"," << endl;
+        out << "        balloonContent: \"" << stA->getName() << " - " << stB->getName() << "\"" << endl;
         out << "    }" << endl;
         out << "}, {" << endl;
         out << "    draggable: false," << endl;
@@ -216,8 +220,8 @@ void MapCreator::makeRouteHTML(QString stationA, QString stationB) throw(Unknown
         Road r = roads[roads.size() - 1];
         Station *lastStation = r.getEnd();
         out << "p" << roads.size() << " = new ymaps.Placemark([" << lastStation->getLatitude() << ", " << lastStation->getLongitude() << "], {" << endl;
-        out << "    hintContent: '" << lastStation->getName().toStdString() << "'," << endl;
-        out << "    balloonContent: '" << lastStation->getName().toStdString() << "'," << endl;
+        out << "    hintContent: '" << lastStation->getName() << "'," << endl;
+        out << "    balloonContent: '" << lastStation->getName() << "'," << endl;
         out << "}, {" << endl;
         out << "    preset: '" << getStationColor(lastStation->getType()) << "'" << endl;
         out << "});" << endl;
@@ -232,10 +236,10 @@ void MapCreator::makeRouteHTML(QString stationA, QString stationB) throw(Unknown
     }
 
     htmlFooter(out);
-    out.close();
+    file.close();
 }
 
-std::string MapCreator::getStationColor(int stationType)
+QString MapCreator::getStationColor(int stationType)
 {
     switch (stationType) {
     case 0:
@@ -249,7 +253,7 @@ std::string MapCreator::getStationColor(int stationType)
     }
 }
 
-std::string MapCreator::getLineColor(int startStationType, int endStationType)
+QString MapCreator::getLineColor(int startStationType, int endStationType)
 {
     if (startStationType == 0 && endStationType == 0) {
         return "#42aaff";
@@ -266,7 +270,7 @@ std::string MapCreator::getLineColor(int startStationType, int endStationType)
     return "#000000";
 }
 
-void MapCreator::htmlHeader(ofstream& out)
+void MapCreator::htmlHeader(QTextStream& out)
 {
     out << "<!DOCTYPE html>" << endl;
     out << "<html>" << endl;
@@ -293,7 +297,7 @@ void MapCreator::htmlHeader(ofstream& out)
     out << "    );" << endl;
 }
 
-void MapCreator::htmlFooter(ofstream& out)
+void MapCreator::htmlFooter(QTextStream &out)
 {
     out << "}" << endl;
     out << "</script>" << endl;

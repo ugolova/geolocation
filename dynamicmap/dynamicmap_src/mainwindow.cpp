@@ -111,18 +111,27 @@ void MainWindow::logout()
 
 void MainWindow::importFile()
 {
-    QString fileName = QFileDialog::getOpenFileName(this, tr("Импортировать файл"), "", tr("Files (*.*)"));
-    qDebug() << "Importing file: " << fileName;
+    try {
 
-    MultiGraph<double, Station> *newContainer = Serialization::readObject(fileName.toStdString().c_str());
+        QString fileName = QFileDialog::getOpenFileName(this, tr("Импортировать файл"), "", tr("Files (*.*)"));
+        qDebug() << "Importing file: " << fileName;
 
-    MapCreator::getInstance()->setContainer(newContainer);
-    MapCreator::getInstance()->makeDefaultHTML();
+        MultiGraph<double, Station> *newContainer = Serialization::readObject(fileName);
 
-    delete container;
-    container = newContainer;
+        MapCreator::getInstance()->setContainer(newContainer);
+        MapCreator::getInstance()->makeDefaultHTML();
 
-    reloadAllBrowsers();
+        delete container;
+        container = newContainer;
+
+        reloadAllBrowsers();
+
+    } catch (const DynamicMapException& e) {
+        qDebug() << e.getMsg();
+        QMessageBox msgBox;
+        msgBox.setText(e.getMsg());
+        msgBox.exec();
+    }
 }
 
 void MainWindow::exportFile()
@@ -130,7 +139,7 @@ void MainWindow::exportFile()
     QString fileName = QFileDialog::getSaveFileName(this, tr("Экспортировать в файл"), "", tr("Files (*.*)"));
     qDebug() << "Exporting to file: " << fileName;
 
-    Serialization::writeObject(container, fileName.toStdString().c_str());
+    Serialization::writeObject(container, fileName);
 }
 
 void MainWindow::on_button_search_clicked()
