@@ -23,6 +23,8 @@ HEADERS += \
     ../dynamicmap_src/controller_gui.h \
     ../dynamicmap_src/exceptions/unknown_station_exception.h \
     ../dynamicmap_src/exceptions/unknown_link_exception.h \
+    ../dynamicmap_src/exceptions/cannot_open_file_exception.h \
+    ../dynamicmap_src/exceptions/incorrect_file_format_exception.h \
     container/algorithm_test.h \
 
 
@@ -40,6 +42,8 @@ SOURCES += \
     ../dynamicmap_src/controller_gui.cpp \
     ../dynamicmap_src/exceptions/unknown_station_exception.cpp \
     ../dynamicmap_src/exceptions/unknown_link_exception.cpp \
+    ../dynamicmap_src/exceptions/cannot_open_file_exception.cpp \
+    ../dynamicmap_src/exceptions/incorrect_file_format_exception.cpp \
     container/algorithm_test.cpp
 
 OTHER_FILES += \
