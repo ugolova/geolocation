@@ -12,6 +12,7 @@ using namespace container;
 
 class Algorithm
 {
+    friend class AlgorithmTest;
 private:
 	static double findMin(DynamicArray<double> * arr);
 	
