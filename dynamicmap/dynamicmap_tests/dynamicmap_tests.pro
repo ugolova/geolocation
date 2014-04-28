@@ -17,7 +17,14 @@ HEADERS += \
     container/station_test.h \
     ../dynamicmap_src/container/station.h \
     container/road_test.h \
-    ../dynamicmap_src/container/road.h
+    ../dynamicmap_src/container/road.h \
+    ../dynamicmap_src/container/algorithm.h \
+    ../dynamicmap_src/container/serialization.h \
+    ../dynamicmap_src/controller_gui.h \
+    ../dynamicmap_src/exceptions/unknown_station_exception.h \
+    ../dynamicmap_src/exceptions/unknown_link_exception.h \
+    container/algorithm_test.h \
+
 
 SOURCES += \
     main.cpp \
@@ -27,5 +34,14 @@ SOURCES += \
     container/station_test.cpp \
     ../dynamicmap_src/container/station.cpp \
     container/road_test.cpp \
-    ../dynamicmap_src/container/road.cpp
+    ../dynamicmap_src/container/road.cpp \
+    ../dynamicmap_src/container/algorithm.cpp \
+    ../dynamicmap_src/container/serialization.cpp \
+    ../dynamicmap_src/controller_gui.cpp \
+    ../dynamicmap_src/exceptions/unknown_station_exception.cpp \
+    ../dynamicmap_src/exceptions/unknown_link_exception.cpp \
+    container/algorithm_test.cpp
+
+OTHER_FILES += \
+    algorithmTest.txt
 
