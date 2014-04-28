@@ -74,16 +74,36 @@ void MapCreator::makeDefaultHTML(bool withLinks)
 
     if (container != NULL) {
         DynamicArray<Station> *arr = container->getVertexs();
+
+        out << "var subwayStations = [];" << endl;
+        out << "var railwayStations = [];" << endl;
+        out << "var hybridStations = [];" << endl;
+
         int arrSize = arr->getSize();
         for (int i = 0; i < arrSize; i++) {
             Station *st = arr->get(i);
-            out << "p" << i << " = new ymaps.Placemark([" << st->getLatitude() << ", " << st->getLongitude() << "], {" << endl;
+
+            switch (st->getType()) {
+            case 0:
+                out << "subwayStations.";
+                break;
+            case 1:
+                out << "railwayStations.";
+                break;
+            case 2:
+                out << "hybridStations.";
+                break;
+            default:
+                out << "subwayStations.";
+                break;
+            }
+            out << "push(new ymaps.Placemark([" << st->getLatitude() << ", " << st->getLongitude() << "], {" << endl;
             out << "    hintContent: '" << st->getName().toStdString() << "'," << endl;
             out << "    balloonContent: '" << st->getName().toStdString() << "'," << endl;
+            out << "    clusterCaption: '" << st->getName().toStdString() << "'," << endl;
             out << "}, {" << endl;
             out << "    preset: '" << getStationColor(st->getType()) << "'" << endl;
-            out << "});" << endl;
-            out << jsMapVar << ".geoObjects.add(p" << i << ");" << endl;
+            out << "}));" << endl;
 
             if (withLinks) {
                 for (int j = 0; j < arrSize; j++) {
@@ -114,6 +134,13 @@ void MapCreator::makeDefaultHTML(bool withLinks)
                 }
             }
         }
+        out << "var subwayClusterer = new ymaps.Clusterer({preset: 'twirl#blueClusterIcons', clusterDisableClickZoom: true});" << endl;
+        out << "var railwayClusterer = new ymaps.Clusterer({preset: 'twirl#redClusterIcons', clusterDisableClickZoom: true});" << endl;
+        out << "var hybridClusterer = new ymaps.Clusterer({preset: 'twirl#violetClusterIcons', clusterDisableClickZoom: true});" << endl;
+        out << "subwayClusterer.add(subwayStations);" << endl;
+        out << "railwayClusterer.add(railwayStations);" << endl;
+        out << "hybridClusterer.add(hybridStations);" << endl;
+        out << jsMapVar << ".geoObjects.add(subwayClusterer).add(railwayClusterer).add(hybridClusterer);" << endl;
     }
 
     htmlFooter(out);
