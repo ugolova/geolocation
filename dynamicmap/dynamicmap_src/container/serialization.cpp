@@ -10,11 +10,11 @@ MultiGraph<double, Station>* Serialization::readObject(QString fileName) throw(D
     QTextStream in(&file);
 
     // regexp patterns
-    QString pDouble = "[\\d]+\\.[\\d]+"; // TODO: allow integers
-    QString pStation = "[^\\[]+"; // TODO: make good regexp
+    QString pDouble = "[\\d]+|[\\d]+\\.[\\d]+"; // integer or double
+    QString pStation = "[\\dA-Za-zА-Яа-яЁё]{1}[\\dA-Za-zА-Яа-яЁё\\-\\(\\) ]*";
     QString pLon = pDouble;
     QString pLat = pDouble;
-    QString pType = "[\\d]{1}";
+    QString pType = "[012]{1}";
     QString pDistance = pDouble;
     QString pStationData = "(" + pStation + ")\\[(" + pLon + "):(" + pLat + ")\\]/(" + pType + ")";
 
@@ -43,7 +43,11 @@ MultiGraph<double, Station>* Serialization::readObject(QString fileName) throw(D
         double endStationLat = regexp.cap(7).toDouble();
         int endStationType = regexp.cap(8).toInt();
 
-        double *distance = new double(regexp.cap(9).toDouble());
+        double *distance = new double(QString::number(regexp.cap(9).toDouble()).toDouble()); // precision workaround
+
+        if (*distance <= 0) {
+            throw IncorrectFileFormatException(QString::number(lineCounter));
+        }
 
         Station *startStation = new Station(startStationName, startStationLon, startStationLat, startStationType);
         Station *endStation = new Station(endStationName, endStationLon, endStationLat, endStationType);

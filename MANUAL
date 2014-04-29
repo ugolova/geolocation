@@ -81,5 +81,4 @@ It will not install on Ubuntu 12.04 since the latter does not have all needed pa
 
 ------------------- EDITING DATA FILES
 
-1. Data files for import must be encoded in UTF-8 WITHOUT BOM!
-2. All the real numbers in file (coordinates and distances) must be rounded up to 6 digits after point (e.g. 11.111111).
+Data files for import must be encoded in UTF-8 WITHOUT BOM!
