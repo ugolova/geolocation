@@ -21,7 +21,11 @@ class Serialization
 private:
     Serialization();
     ~Serialization();
+    static QString pStation;
+    static QString pDouble;
+    static QString pType;
 public:
+    static QString getStationPattern();
     static MultiGraph<double, Station> * readObject(QString fileName) throw(DynamicMapException);
     static void writeObject(MultiGraph<double, Station> *graph, QString fileName) throw(CannotOpenFileException);
 };

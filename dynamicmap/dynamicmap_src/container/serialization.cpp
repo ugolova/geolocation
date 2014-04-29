@@ -1,5 +1,16 @@
 #include "serialization.h"
 
+QString Serialization::pStation = "[^\\[]+"; // "[\\dA-Za-zА-Яа-яЁё]{1}[\\dA-Za-zА-Яа-яЁё\\-\\(\\) ]*";
+
+QString Serialization::pDouble = "[\\d]+|[\\d]+\\.[\\d]+"; // integer or double
+
+QString Serialization::pType = "[012]{1}";
+
+QString Serialization::getStationPattern()
+{
+    return pStation;
+}
+
 MultiGraph<double, Station>* Serialization::readObject(QString fileName) throw(DynamicMapException)
 {
     QFile file(fileName);
@@ -9,17 +20,8 @@ MultiGraph<double, Station>* Serialization::readObject(QString fileName) throw(D
     }
     QTextStream in(&file);
 
-    // regexp patterns
-    QString pDouble = "[\\d]+|[\\d]+\\.[\\d]+"; // integer or double
-    QString pStation = "[\\dA-Za-zА-Яа-яЁё]{1}[\\dA-Za-zА-Яа-яЁё\\-\\(\\) ]*";
-    QString pLon = pDouble;
-    QString pLat = pDouble;
-    QString pType = "[012]{1}";
-    QString pDistance = pDouble;
-    QString pStationData = "(" + pStation + ")\\[(" + pLon + "):(" + pLat + ")\\]/(" + pType + ")";
-
-    // result regexp
-    QRegExp regexp("^" + pStationData + "-" + pStationData + "-\\[(" + pDistance + ")\\]" + "$");
+    QString pStationData = "(" + pStation + ")\\[(" + pDouble + "):(" + pDouble + ")\\]/(" + pType + ")";
+    QRegExp regexp("^" + pStationData + "-" + pStationData + "-\\[(" + pDouble + ")\\]" + "$");
 
     MultiGraph<double, Station>* graph = new MultiGraph<double, Station>();
 
